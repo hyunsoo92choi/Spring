@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 
 import org.springframework.util.ResourceUtils;
 
@@ -41,12 +42,13 @@ public class FileUtil {
 
 		String ls = System.getProperty("line.separator");
 		String result = null;
+		
 		try {
 
-			File file = ResourceUtils.getFile("classpath:user.csv");
+			File file = ResourceUtils.getFile("classpath:testUserDict.csv");
 
 			StringBuilder sb = new StringBuilder((int) file.length());
-			BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
+			BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8));
 
 			String line = br.readLine();
 

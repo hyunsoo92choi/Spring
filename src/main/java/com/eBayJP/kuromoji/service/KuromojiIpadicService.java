@@ -30,7 +30,7 @@ public class KuromojiIpadicService {
     		
 	public List<Token> Tokenize(String text) {
 
-		Tokenizer tokenizer = null;
+		Tokenizer tokenizer = new Tokenizer.Builder().build();
 		List<Token> tokens = tokenizer.tokenize(text);
 
 		return tokens;
