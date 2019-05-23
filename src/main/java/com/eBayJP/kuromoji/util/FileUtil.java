@@ -45,7 +45,7 @@ public class FileUtil {
 		
 		try {
 
-			File file = ResourceUtils.getFile("classpath:custom_dic.csv");
+			File file = ResourceUtils.getFile("classpath:userDic.csv");
 
 			StringBuilder sb = new StringBuilder((int) file.length());
 			BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8));
