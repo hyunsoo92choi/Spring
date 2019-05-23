@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.ResourceUtils;
 
 /**
@@ -44,11 +45,11 @@ public class FileUtil {
 		String result = null;
 		
 		try {
+			
+			ClassPathResource cpr = new ClassPathResource("userDic.csv");
 
-			File file = ResourceUtils.getFile("classpath:userDic.csv");
-
-			StringBuilder sb = new StringBuilder((int) file.length());
-			BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8));
+			StringBuilder sb = new StringBuilder();
+			BufferedReader br = new BufferedReader(new InputStreamReader(cpr.getInputStream(), StandardCharsets.UTF_8));
 
 			String line = br.readLine();
 
@@ -57,8 +58,8 @@ public class FileUtil {
 				sb.append(ls);
 				line = br.readLine();
 			}
-
 			result = sb.toString();
+			
 		} catch (FileNotFoundException fileException) {
 			fileException.printStackTrace();
 		} catch (UnsupportedEncodingException unsupportedEncodingException) {
