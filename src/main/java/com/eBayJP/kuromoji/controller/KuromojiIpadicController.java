@@ -62,7 +62,7 @@ public class KuromojiIpadicController {
 			text = text.substring(0, 400);
 		}
 		
-		List<Token> tokens = kuromojiIpadicService.Tokenize(text);
+		List<Token> tokens = kuromojiIpadicService.getUserDicToken(text);
 		List<TokenEntity> rtnTokens = new ArrayList<TokenEntity>();
 		
 		for (Token token : tokens) {
