@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -27,6 +28,7 @@ import com.eBayJP.kuromoji.util.FileUtil;
 @Service
 public class KuromojiIpadicService {
 	
+	static final  String userDictionary = FileUtil.getUserDictionary();
     		
 	public List<Token> Tokenize(String text) {
 
@@ -40,7 +42,7 @@ public class KuromojiIpadicService {
 		
 		Tokenizer tokenizer = null;
 		
-		String userDictionary = FileUtil.getUserDictionary();
+//		String userDictionary = FileUtil.getUserDictionary();
 		
 		try {
 
@@ -90,17 +92,23 @@ public class KuromojiIpadicService {
         );
     }
     
+    public List<Token> getUserDicTokensForGoodsName(String goodsNm) {
+    	
+    	Tokenizer tokenizer = null;
+    	
+    	List<Token> tokens = new ArrayList<Token>();
+		
+		String userDictionary = FileUtil.getUserDictionary();
+		
+		try {
+			tokenizer = makeTokenizer(userDictionary);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return tokens;
+    	
+    }
     
-//    private Tokenizer makeUserDicTokenizer(String userDictionaryEntry, String mode) throws IOException {
-//    	Tokenizer 
-//    	//TODO: 공통코드 Jar 파일로 만들어서 Dependency 걸어 줄 것
-//    	if ("SEARCH".equals(mode)) {
-//    		
-//    	}
-//        return new Tokenizer.Builder().mode(TokenizerBase.Mode.NORMAL)
-//            .userDictionary(
-//                makeUserDictionaryStream(userDictionaryEntry)
-//            )
-//            .build();
-//    }
+
 }

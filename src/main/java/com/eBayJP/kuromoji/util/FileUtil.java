@@ -1,16 +1,15 @@
 package com.eBayJP.kuromoji.util;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.util.ResourceUtils;
 
 /**
  * <pre>
@@ -70,5 +69,32 @@ public class FileUtil {
 
 		System.out.println(result);
 		return result;
+	}
+	
+	public static List<String> getGoodsNmList() {
+		
+		List<String> resultList = new ArrayList<String>();
+		String ls = System.getProperty("line.separator");
+		
+		try {
+			
+			ClassPathResource cpr = new ClassPathResource("GoodsList.csv");
+			BufferedReader br = new BufferedReader(new InputStreamReader(cpr.getInputStream(), StandardCharsets.UTF_8));
+
+			String line = br.readLine();
+
+			while (line != null) {
+				resultList.add(line.trim());
+				line = br.readLine();
+			}
+		} catch (FileNotFoundException fileException) {
+			fileException.printStackTrace();
+		} catch (UnsupportedEncodingException unsupportedEncodingException) {
+			unsupportedEncodingException.printStackTrace();
+		} catch (IOException ioException) {
+			ioException.printStackTrace();
+		}
+		
+		return resultList;
 	}
 }
