@@ -16,15 +16,6 @@ public class TokenResponseEntity implements Serializable  {
 	 */
 	private static final long serialVersionUID = -3415878730381986845L;
 	
-//	@ApiModelProperty(required = false, value = "Tokens")
-//	private List<TokenEntity> tokens = new ArrayList<TokenEntity>();
-//
-//	/* Constructors */
-//	public TokenResponseEntity() {}
-//
-//	public TokenResponseEntity(Map<String, Object> model) {
-//		this.tokens = (List<TokenEntity>) model.get("tokens");
-//	}
 	@ApiModelProperty(required = false, value = "Tokens")
 	private List<TokenEntity> tokens = new ArrayList<TokenEntity>();
 	@ApiModelProperty(required = true, value = "Log message")
