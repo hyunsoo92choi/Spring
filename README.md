@@ -16,11 +16,43 @@ mvn clean install
 mvn clean package
 java -jar kuromoji-rest-server.jar
 
-## 실행
+## APIs
+### Text 품사 Tagging 결과
+<blockquote>
+<p>URL : kuromoji-ipadic/v1/tokenize </p>
+<p>Method : GET </p>
+</blockquote>
+
+예시
 https://kuromoji-rest.herokuapp.com/kuromoji-ipadic/v1/tokenize?text=ZEN FOOD ZE:A YSL サーモス
+
+### Texts 품사 Tagging 결과
+<blockquote>
+<p>URL : kuromoji-ipadic/v1/tokenize </p>
+<p>Method : POST </p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th align="left">Property</th>
+<th align="left">Data Type</th>
+<th align="left">Mandatory</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">texts</td>
+<td align="left">List<String></td>
+<td align="left">Y</td>
+</tr>
+</tbody>
+</table>
+
+
+
 
 ## 마치며
 파일럿 형식으로 만들어 본 프로젝트로 API 형태로 제공하면, 고사양의 CPU와 메모리를 이용 할 수 없는 단말에서도 사용할 수 있으며
 RestClient로 결과를 보기 쉽도록 개발 하였습니다. 
-향후 Post 방식으로 Text를 받을 수 있도록 할 예정이며, 검색 모드를 선택하여 Tokenizer를 생성 할 수 있도록 할 예정입니다.
+향후 Post 방식으로 Text를 받을 수 있도록 할 예정이며(완료), 검색 모드를 선택하여 Tokenizer를 생성 할 수 있도록 할 예정입니다.
 * Kuromoji is licensed under the Apache License, Version 2.0
