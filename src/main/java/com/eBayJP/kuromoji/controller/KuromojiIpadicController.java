@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,9 +22,6 @@ import com.eBayJP.kuromoji.entity.request.KuromojiRequestEntity;
 import com.eBayJP.kuromoji.entity.response.TokenResponseEntity;
 import com.eBayJP.kuromoji.service.KuromojiIpadicService;
 import com.eBayJP.kuromoji.util.FileUtil;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -44,12 +42,6 @@ public class KuromojiIpadicController {
 	
 	private final KuromojiIpadicService kuromojiIpadicService;
 	
-	
-	/** 
-	 * Constructor
-	 * Autowired -> Construct DI
-	 * @param kuromojiIpadicService
-	 */
 	public KuromojiIpadicController(KuromojiIpadicService kuromojiIpadicService) {
 	    this.kuromojiIpadicService = kuromojiIpadicService;
 	}
