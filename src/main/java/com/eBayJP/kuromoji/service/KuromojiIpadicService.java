@@ -9,13 +9,14 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.atilika.kuromoji.ipadic.Token;
 import com.atilika.kuromoji.ipadic.Tokenizer;
-import com.eBayJP.kurolib.commonCode.codeType.PartOfSpeech;
+import com.eBayJP.kuromoji.common.code.mapper.EnumMapper;
+import com.eBayJP.kuromoji.common.code.mapper.EnumValue;
+import com.eBayJP.kuromoji.common.code.pos.PosType;
+//import com.eBayJP.kurolib.commonCode.codeType.PartOfSpeech;
 import com.eBayJP.kuromoji.entity.TokenEntity;
 import com.eBayJP.kuromoji.util.FileUtil;
 
@@ -38,6 +39,8 @@ public class KuromojiIpadicService {
 	static final  String userDictionary = FileUtil.getUserDictionary();
 	
 	private final static Logger logger = LoggerFactory.getLogger(KuromojiIpadicService.class);
+	
+	private EnumMapper enumMapperFactory;
 	
 	public List<Token> Tokenize(String text) {
 
@@ -128,12 +131,12 @@ public class KuromojiIpadicService {
      */ 
     private boolean isValidate(TokenEntity tokenEntity) {
     	boolean result = false;
-
+    	
     	// 동사, 명사, 형용사, 형용동사
-    	if ( PartOfSpeech.PartOfSpeechType.VERB.getValue().equals(tokenEntity.getPartOfSpeechLevel1())
-    			|| PartOfSpeech.PartOfSpeechType.NOUN.getValue().equals(tokenEntity.getPartOfSpeechLevel1()) 
-    			|| PartOfSpeech.PartOfSpeechType.ADJE.getValue().equals(tokenEntity.getPartOfSpeechLevel1())
-    			|| PartOfSpeech.PartOfSpeechType.ADVB.getValue().equals(tokenEntity.getPartOfSpeechLevel1())
+    	if ( PosType.VERB.getCodeName().equals(tokenEntity.getPartOfSpeechLevel1())
+    			|| PosType.NOUN.getCodeName().equals(tokenEntity.getPartOfSpeechLevel1()) 
+    			|| PosType.ADJE.getCodeName().equals(tokenEntity.getPartOfSpeechLevel1())
+    			|| PosType.ADVB.getCodeName().equals(tokenEntity.getPartOfSpeechLevel1())
     	   )
     		result = true;
     	

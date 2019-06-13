@@ -2,12 +2,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+	
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.1.4.RELEASE</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath/> 
 	</parent>
+	
 	<groupId>com.eBayJP</groupId>
 	<artifactId>kuromoji-rest-server</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
@@ -22,7 +24,7 @@
     	<spring.framework.boot.version>2.1.4.RELEASE</spring.framework.boot.version>
     	<springfox.version>2.4.0</springfox.version>
 	    <failOnMissingWebXml>false</failOnMissingWebXml>
-	    
+	    <kuromoji.version>0.9.0</kuromoji.version>
 	</properties>
 
 	<dependencies>
@@ -57,17 +59,45 @@
 		<dependency>
 		    <groupId>com.atilika.kuromoji</groupId>
 		    <artifactId>kuromoji-ipadic</artifactId>
-		    <version>0.9.0</version>
+		    <version>${kuromoji.version}</version>
 		</dependency>
+		
+		<!-- <dependency>
+	      <groupId>com.atilika.kuromoji</groupId>
+	      <artifactId>kuromoji-ipadic-neologd</artifactId>
+	      <version>${kuromoji.version}</version>
+	    </dependency> -->
 		
 		<!-- java8 time json -->
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
         </dependency>
-	   
+        
+        <!-- JPA -->
+        <dependency>
+		   <groupId>org.springframework.data</groupId>
+		   <artifactId>spring-data-jpa</artifactId>		   
+		</dependency>
+		
+		<!-- Hibernate -->
+		<dependency>
+		   <groupId>org.hibernate</groupId>
+		   <artifactId>hibernate-entitymanager</artifactId>		   
+		</dependency>
+		
+		<!-- eBay Japan Kuromoji Common Library
+			pom에서 제거 후 내부 프로젝트에 일단 개발 함.		
+		<dependency>
+			<groupId>com.eBayJP</groupId>
+			<artifactId>common-lib</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/resources/common-lib-0.0.1-SNAPSHOT.jar</systemPath>			
+		</dependency>
+		 -->
 	</dependencies>
-
+	
 	<build>
 		<finalName>${project.artifactId}</finalName>
 		<plugins>
@@ -90,10 +120,10 @@
 					<source>1.8</source>
 					<target>1.8</target>
 				</configuration>
-				 </plugin>
-			
+			</plugin>
 		</plugins>		
 		
 	</build>
 
-</project>
+	<packaging>war</packaging>
+	</project>
