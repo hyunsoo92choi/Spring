@@ -37,7 +37,7 @@ import springfox.documentation.annotations.ApiIgnore;
  * @author : hychoi
  */
 @RestController
-@RequestMapping(value = "/kuromoji-ipadic")
+@RequestMapping(value = "/ebayjp-ipadic")
 public class KuromojiIpadicController {
 	
 	private final KuromojiIpadicService kuromojiIpadicService;

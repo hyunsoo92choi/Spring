@@ -18,7 +18,7 @@ import org.springframework.web.client.RestTemplate;
 import com.eBayJP.kuromoji.util.FileUtil;
 
 @RestController
-@RequestMapping(value = "/qoo10-rest")
+@RequestMapping(value = "/ebayjp-dic")
 public class HomeRestController {
 
 	@RequestMapping(value = "/v1/tokenize", method = RequestMethod.GET)
@@ -32,6 +32,7 @@ public class HomeRestController {
 		Long startTime = System.currentTimeMillis();
 		RestTemplate restTemplate = new RestTemplate();
 		System.out.println("상품수 : " + goodsNmList.size());
+		
 		for (String goodsNm : goodsNmList) {
 			url = "http://extract.qoo10.jp/TermExtractorServlet?ext=JAPANESE&ext_opt=NONE&symbol=ON&input=" + goodsNm;
 			
