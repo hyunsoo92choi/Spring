@@ -12,8 +12,8 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
  * @date : 2019. 6. 28.
  * @author : hychoi
  */
-//@Configuration
-//@PropertySource(value = "classpath:/ebayJPDictionary.csv")
+@Configuration
+@PropertySource(value = "classpath:ebayJPDictionary.csv")
 public class EnvironmentConfiguration {
 	
 	@Bean

@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.atilika.kuromoji.ipadic.Token;
-import com.eBayJP.kuromoji.entity.TokenEntity;
-import com.eBayJP.kuromoji.entity.request.KuromojiRequestEntity;
-import com.eBayJP.kuromoji.entity.response.TokenResponseEntity;
+import com.eBayJP.kuromoji.common.entity.TokenEntity;
+import com.eBayJP.kuromoji.common.entity.request.KuromojiRequestEntity;
+import com.eBayJP.kuromoji.common.entity.response.TokenResponseEntity;
 import com.eBayJP.kuromoji.service.KuromojiIpadicService;
 import com.eBayJP.kuromoji.util.FileUtil;
 

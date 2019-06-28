@@ -1,4 +1,4 @@
-package com.eBayJP.kuromoji.entity.response;
+package com.eBayJP.kuromoji.common.entity.response;
 
 import java.io.Serializable;
 

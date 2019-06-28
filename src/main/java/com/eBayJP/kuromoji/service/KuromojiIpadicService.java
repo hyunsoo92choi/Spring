@@ -16,8 +16,7 @@ import com.atilika.kuromoji.ipadic.Tokenizer;
 import com.eBayJP.kuromoji.common.code.mapper.EnumMapper;
 import com.eBayJP.kuromoji.common.code.mapper.EnumValue;
 import com.eBayJP.kuromoji.common.code.pos.PosType;
-//import com.eBayJP.kurolib.commonCode.codeType.PartOfSpeech;
-import com.eBayJP.kuromoji.entity.TokenEntity;
+import com.eBayJP.kuromoji.common.entity.TokenEntity;
 import com.eBayJP.kuromoji.util.FileUtil;
 
 /**

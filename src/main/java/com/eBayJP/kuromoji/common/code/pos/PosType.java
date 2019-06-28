@@ -39,7 +39,8 @@ public enum PosType implements EnumType {
   , POST("助詞")
   , AUXI("助動詞")
   , ADJW("連体詞")
-  , INTE("感動詞");
+  , INTE("感動詞")
+  , CUST("カスタム名詞");	
 
 	private String codeName;
 

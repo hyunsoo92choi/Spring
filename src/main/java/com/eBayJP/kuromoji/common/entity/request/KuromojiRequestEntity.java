@@ -1,4 +1,4 @@
-package com.eBayJP.kuromoji.entity.request;
+package com.eBayJP.kuromoji.common.entity.request;
 
 import java.io.Serializable;
 import java.util.ArrayList;

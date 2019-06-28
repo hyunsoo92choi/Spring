@@ -32,7 +32,7 @@ public class ReloadConfiguration {
     void init() {
 
         builder = new ReloadingFileBasedConfigurationBuilder<>(PropertiesConfiguration.class)
-                .configure(new Parameters().fileBased().setFile(new File("src/main/resources/properties/common.properties")));
+                .configure(new Parameters().fileBased().setFile(new File("src/main/resources/ebayJPDictionary.csv")));
 
         builder.addEventListener(ConfigurationBuilderEvent.CONFIGURATION_REQUEST, new EventListener<Event>() {
             @Override

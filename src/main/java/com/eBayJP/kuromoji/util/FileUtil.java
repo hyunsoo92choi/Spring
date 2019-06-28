@@ -45,7 +45,7 @@ public class FileUtil {
 		
 		try {
 			
-			ClassPathResource cpr = new ClassPathResource("userDic.csv");
+			ClassPathResource cpr = new ClassPathResource("ebayJPDictionary.csv");
 
 			StringBuilder sb = new StringBuilder();
 			BufferedReader br = new BufferedReader(new InputStreamReader(cpr.getInputStream(), StandardCharsets.UTF_8));

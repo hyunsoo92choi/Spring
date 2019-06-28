@@ -1,11 +1,11 @@
-package com.eBayJP.kuromoji.entity.response;
+package com.eBayJP.kuromoji.common.entity.response;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.eBayJP.kuromoji.entity.TokenEntity;
+import com.eBayJP.kuromoji.common.entity.TokenEntity;
 
 import io.swagger.annotations.ApiModelProperty;
 
