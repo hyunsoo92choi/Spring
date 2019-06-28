@@ -33,7 +33,7 @@ public class ScheduleConfiguration implements ApplicationContextAware {
     void init(){
 		
 		FileUtil.ebayJapanDictionary = FileUtil.getUserDictionary();
-		log.info("[ScheduleConfiguration]: >>>> File Read:{}\n", FileUtil.ebayJapanDictionary );
+//		log.info("[ScheduleConfiguration]: >>>> File Read:{}\n", FileUtil.ebayJapanDictionary );
 		resetBean("EbayJPTokenizer");
     }
 

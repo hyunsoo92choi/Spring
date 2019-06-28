@@ -102,9 +102,7 @@ public class KuromojiIpadicService {
     	
     	for(Token token : tokens) { 
     		TokenEntity tokenEntity = new TokenEntity(token);
-    		// check validation
-    		if (isValidate(tokenEntity))
-    			entityList.add(tokenEntity);
+   			entityList.add(tokenEntity);
     	}
     	
     	return entityList;
