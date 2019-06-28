@@ -20,7 +20,7 @@ import org.springframework.core.io.ClassPathResource;
  * @author : hychoi
  */
 public class FileUtil {
-	
+	public static String ebayJapanDictionary = getUserDictionary();
 	/**
 	 * <pre>
 	 * 1. 개요 : 커스텀 사전 파일을 읽어와 String 형태로 return 하는 method
