@@ -1,5 +1,5 @@
 
-package com.eBayJP.kuromoji.controller;
+package com.eBayJP.kuromoji.app.poc.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.atilika.kuromoji.ipadic.Token;
+import com.eBayJP.kuromoji.app.poc.service.KuromojiIpadicService;
 import com.eBayJP.kuromoji.common.entity.TokenEntity;
 import com.eBayJP.kuromoji.common.entity.request.KuromojiRequestEntity;
 import com.eBayJP.kuromoji.common.entity.response.TokenResponseEntity;
-import com.eBayJP.kuromoji.service.KuromojiIpadicService;
 import com.eBayJP.kuromoji.util.FileUtil;
 
 import io.swagger.annotations.ApiOperation;

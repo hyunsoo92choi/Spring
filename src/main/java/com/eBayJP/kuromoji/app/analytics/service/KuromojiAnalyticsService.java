@@ -32,6 +32,24 @@ public class KuromojiAnalyticsService {
 	@Qualifier("EbayJPTokenizer")
 	private Tokenizer ebayJPTokenizer;
 
+	/**
+	 * <pre>
+	 * 1. 개요 : 
+	 * 2. 처리내용 : 
+	 * </pre>
+	 * @Method Name : Tokenize
+	 * @date : 2019. 6. 28.
+	 * @author : hychoi
+	 * @history : 
+	 *	-----------------------------------------------------------------------
+	 *	변경일				작성자						변경내용  
+	 *	----------- ------------------- ---------------------------------------
+	 *	2019. 6. 28.		hychoi				최초 작성 
+	 *	-----------------------------------------------------------------------
+	 * 
+	 * @param text
+	 * @return
+	 */ 
 	public List<TokenEntity> Tokenize(String text) {
 		
 		log.info("[KuromojiAnalyticsService]: >>>> Tokenize text: {}", text);

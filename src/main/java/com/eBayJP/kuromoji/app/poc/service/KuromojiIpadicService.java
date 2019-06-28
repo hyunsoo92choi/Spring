@@ -1,4 +1,4 @@
-package com.eBayJP.kuromoji.service;
+package com.eBayJP.kuromoji.app.poc.service;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

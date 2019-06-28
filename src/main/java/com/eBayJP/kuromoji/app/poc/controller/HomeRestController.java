@@ -1,4 +1,4 @@
-package com.eBayJP.kuromoji.controller;
+package com.eBayJP.kuromoji.app.poc.controller;
 
 import java.io.IOException;
 import java.util.HashMap;

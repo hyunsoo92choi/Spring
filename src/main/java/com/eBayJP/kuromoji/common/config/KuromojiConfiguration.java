@@ -77,11 +77,11 @@ public class KuromojiConfiguration {
 	 * @throws Throwable
 	 */ 
 	@Bean(name="EbayJPTokenizer")
-	@PostConstruct
 	@RefreshScope
+	@PostConstruct
     public Tokenizer ebayTokenizer() throws Throwable {
 		
-		log.info("[KuromojiConfiguration]: >>>> ebayTokenizer Bean 등록 Refresh Checker");
+		log.info("[KuromojiConfiguration]: >>>> ebayTokenizer Bean 등록");
 		
         return new Tokenizer.Builder()
         		.mode(TokenizerBase.Mode.SEARCH)
