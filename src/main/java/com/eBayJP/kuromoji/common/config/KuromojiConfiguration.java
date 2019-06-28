@@ -1,11 +1,12 @@
 package com.eBayJP.kuromoji.common.config;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 import javax.annotation.PostConstruct;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
@@ -23,6 +24,8 @@ import com.eBayJP.kuromoji.util.FileUtil;
  */
 @Component
 public class KuromojiConfiguration {
+	
+	private static final Logger log = LoggerFactory.getLogger(KuromojiConfiguration.class);
 	
 	/**
 	 * <pre>
@@ -45,6 +48,8 @@ public class KuromojiConfiguration {
 	@Bean(name="KuromojiTokenizer")
 	@PostConstruct
     public Tokenizer kuromojiTokenizer() {
+		
+		log.info("[KuromojiConfiguration]: >>>> KuromojiTokenizer Bean 등록");
         return new Tokenizer.Builder()
         		.mode(TokenizerBase.Mode.SEARCH)
         		.build();
@@ -75,6 +80,9 @@ public class KuromojiConfiguration {
 	@PostConstruct
 	@RefreshScope
     public Tokenizer ebayTokenizer() throws Throwable {
+		
+		log.info("[KuromojiConfiguration]: >>>> ebayTokenizer Bean 등록 Refresh Checker");
+		
         return new Tokenizer.Builder()
         		.mode(TokenizerBase.Mode.SEARCH)
         		.userDictionary(makeUserDictionaryStream(FileUtil.ebayJapanDictionary))
