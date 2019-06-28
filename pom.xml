@@ -79,29 +79,14 @@
 			<artifactId>log4jdbc-log4j2-jdbc4.1</artifactId>
 			<version>1.16</version>
 		</dependency>
+		
+		<dependency>
+		    <groupId>org.springframework.security</groupId>
+		    <artifactId>spring-security-crypto</artifactId>
+		</dependency>
         
-        <!-- JPA -->
-        <dependency>
-		   <groupId>org.springframework.data</groupId>
-		   <artifactId>spring-data-jpa</artifactId>		   
-		</dependency>
+        
 		
-		<!-- Hibernate -->
-		<dependency>
-		   <groupId>org.hibernate</groupId>
-		   <artifactId>hibernate-entitymanager</artifactId>		   
-		</dependency>
-		
-		<!-- eBay Japan Kuromoji Common Library
-			pom에서 제거 후 내부 프로젝트에 일단 개발 함.		
-		<dependency>
-			<groupId>com.eBayJP</groupId>
-			<artifactId>common-lib</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/src/main/resources/common-lib-0.0.1-SNAPSHOT.jar</systemPath>			
-		</dependency>
-		 -->
 	</dependencies>
 	
 	<build>
