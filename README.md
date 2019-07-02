@@ -19,7 +19,7 @@ java -jar kuromoji-rest-server.jar
 ## APIs
 ### Text 품사 Tagging 결과
 <blockquote>
-<p>URL : kuromoji-ipadic/v1/tokenize </p>
+<p>URL : /api/{version}/analytics/tokenize, v2 </p>
 <p>Method : GET </p>
 </blockquote>
 
@@ -28,7 +28,7 @@ https://kuromoji-rest.herokuapp.com/kuromoji-ipadic/v1/tokenize?text=ZEN FOOD ZE
 
 ### Texts 품사 Tagging 결과
 <blockquote>
-<p>URL : kuromoji-ipadic/v1/tokenize </p>
+<p>URL : /api/{version}/analytics/tokenize, v1 </p>
 <p>Method : POST </p>
 </blockquote>
 <table>
@@ -54,5 +54,12 @@ https://kuromoji-rest.herokuapp.com/kuromoji-ipadic/v1/tokenize?text=ZEN FOOD ZE
 ## 마치며
 파일럿 형식으로 만들어 본 프로젝트로 API 형태로 제공하면, 고사양의 CPU와 메모리를 이용 할 수 없는 단말에서도 사용할 수 있으며
 RestClient로 결과를 보기 쉽도록 개발 하였습니다. 
-향후 Post 방식으로 Text를 받을 수 있도록 할 예정이며(완료), 검색 모드를 선택하여 Tokenizer를 생성 할 수 있도록 할 예정입니다.
+향후 Post 방식으로 Text를 받을 수 있도록 할 예정이며(완료), 
+검색 모드를 선택하여 Tokenizer를 생성 할 수 있도록 할 예정(완료) 입니다.
+추가사항s:
+    Tokenizer를 요청할때마다 생성하였으나, Bean으로 등록하여 Container에 위임하였습니다.
+    사전정보를 주기적으로 갱신할 수 있게 Schedule를 추가하였습니다(매 정시 사전정보 갱신).
+    사전정보 갱신 시 Tokenizer 또한 Refresh 됩니다.
+    rest-doc 이용한 api 명세서 생성기능을 추가하였습니다.
+
 * Kuromoji is licensed under the Apache License, Version 2.0
