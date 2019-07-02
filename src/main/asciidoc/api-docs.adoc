@@ -1,0 +1,27 @@
+= eBay Japan Morpheme analyzer API 명세 (Spring REST Docs)
+​
+== 토큰화_리스트_조회 (GetMapping)
+​
+=== Curl request
+​
+include::{snippets}/kuromoji-analytics-controller-test/토큰화_리스트_조회/curl-request.adoc[]
+​
+=== HTTP request
+​
+include::{snippets}/kuromoji-analytics-controller-test/토큰화_리스트_조회/http-request.adoc[]
+​
+=== HTTP response
+​
+include::{snippets}/kuromoji-analytics-controller-test/토큰화_리스트_조회/http-response.adoc[]
+​
+​
+=== request body
+​
+include::{snippets}/kuromoji-analytics-controller-test/토큰화_리스트_조회/request-body.adoc[]
+​
+​
+=== response body
+​
+include::{snippets}/kuromoji-analytics-controller-test/토큰화_리스트_조회/response-body.adoc[]
+​
+​

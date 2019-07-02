@@ -15,6 +15,8 @@ import com.atilika.kuromoji.TokenizerBase;
 import com.atilika.kuromoji.ipadic.Tokenizer;
 import com.eBayJP.kuromoji.util.FileUtil;
 
+import lombok.NoArgsConstructor;
+
 /**
  * <pre>
  * com.eBayJP.kuromoji.common.config_KuromojiConfiguration.java
@@ -23,6 +25,7 @@ import com.eBayJP.kuromoji.util.FileUtil;
  * @author : hychoi
  */
 @Component
+//@NoArgsConstructor
 public class KuromojiConfiguration {
 	
 	private static final Logger log = LoggerFactory.getLogger(KuromojiConfiguration.class);

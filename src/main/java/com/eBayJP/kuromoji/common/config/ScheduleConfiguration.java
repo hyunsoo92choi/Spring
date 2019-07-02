@@ -28,15 +28,14 @@ public class ScheduleConfiguration implements ApplicationContextAware {
 	
 	private ApplicationContext applicationContext;
 	
-	@Scheduled(cron = "*/10 * * * * *")
+	@Scheduled(cron = "0 0 0-23 * * *")
     @PostConstruct
     void init(){
+		
 		String newEbayJapanDictionary = FileUtil.getUserDictionary();
 		
-		if (! FileUtil.ebayJapanDictionary.contentEquals(newEbayJapanDictionary)) {
+		if ( !FileUtil.ebayJapanDictionary.contentEquals(newEbayJapanDictionary) )
 			FileUtil.ebayJapanDictionary = newEbayJapanDictionary;
-		} else 
-			log.info("[ScheduleConfiguration]: >>>> isTrue:{}",true);
 		
 		log.info("[ScheduleConfiguration]: >>>> init:\n{}",FileUtil.ebayJapanDictionary);
 		resetBean("EbayJPTokenizer");

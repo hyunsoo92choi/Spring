@@ -7,8 +7,6 @@ import java.util.Map;
 
 import com.eBayJP.kuromoji.common.entity.TokenEntity;
 
-import io.swagger.annotations.ApiModelProperty;
-
 public class TokenResponseEntity implements Serializable  {
 
 	/**
@@ -16,15 +14,10 @@ public class TokenResponseEntity implements Serializable  {
 	 */
 	private static final long serialVersionUID = -3415878730381986845L;
 	
-	@ApiModelProperty(required = false, value = "Tokens")
 	private List<TokenEntity> tokens = new ArrayList<TokenEntity>();
-	@ApiModelProperty(required = true, value = "Log message")
 	private String log = "";
-	@ApiModelProperty(required = true, value = "Start date")
 	private String startTime = "";
-	@ApiModelProperty(required = true, value = "End date")
 	private String endTime = "";
-	@ApiModelProperty(required = true, value = "Process time [millisecond]")
 	private String processTime = "";
 
 	/* Constructor */

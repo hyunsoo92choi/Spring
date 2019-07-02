@@ -1,6 +1,5 @@
 package com.eBayJP.kuromoji.app.analytics.controller;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,13 +7,13 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,16 +31,17 @@ import com.eBayJP.kuromoji.common.version.ApiVersion;
  * @author : hychoi
  */
 @RestController
-@RequestMapping("api/{version}/analytics")
+@RequestMapping(value = "api/{version}/analytics")
 public class KuromojiAnalyticsController {
 	
 	private final Logger log = LoggerFactory.getLogger(KuromojiAnalyticsController.class);
 	
-	private final KuromojiAnalyticsService kuromojiAnalyticsService;
+	@Autowired(required=false)
+	private KuromojiAnalyticsService kuromojiAnalyticsService;
 	
-	public KuromojiAnalyticsController(KuromojiAnalyticsService kuromojiAnalyticsService) {
-	    this.kuromojiAnalyticsService = kuromojiAnalyticsService;
-	}
+//	public KuromojiAnalyticsController(KuromojiAnalyticsService kuromojiAnalyticsService) {
+//	    this.kuromojiAnalyticsService = kuromojiAnalyticsService;
+//	}
 	
 	/**
 	 * <pre>
@@ -62,7 +62,7 @@ public class KuromojiAnalyticsController {
 	 * @return
 	 */ 
 	@ApiVersion(1)
-	@GetMapping("/tokenize")
+	@GetMapping(value = "/tokenize")
     public ResponseEntity<Map<String, Object>> tokenize(@RequestParam("text") String text) {
         
 		log.info("[KuromojiAnalyticsController]: >>>> @GetMapping :text: {}", text);
@@ -74,11 +74,11 @@ public class KuromojiAnalyticsController {
 		
 		Long endTime = System.currentTimeMillis();
 		Long processTime = endTime - startTime;
-		
 		model.put("tokens", entityList);
-		model.put("startTime",startTime.toString());
-		model.put("endTime",endTime.toString());
-		model.put("processTime",processTime.toString());
+//		model.put("tokens", entityList);
+//		model.put("startTime",startTime.toString());
+//		model.put("endTime",endTime.toString());
+//		model.put("processTime",processTime.toString());
 		
 		return new ResponseEntity< Map<String, Object> >(model, HttpStatus.OK);
     }
@@ -102,7 +102,7 @@ public class KuromojiAnalyticsController {
 	 * @return
 	 */ 
 	@ApiVersion(1)
-	@PostMapping("/tokenize")
+	@PostMapping(value = "/tokenize")
 	public ResponseEntity<Map<String, Object>> tokenizeByPost(@RequestBody KuromojiRequestEntity requestKuromojiEntity) {
 		
 		List<String> textList = requestKuromojiEntity.getTexts();
@@ -134,4 +134,36 @@ public class KuromojiAnalyticsController {
 		return new ResponseEntity< Map<String, Object> >(model, HttpStatus.OK);
 	}
 	
+	@ApiVersion(2)
+	@GetMapping(value = "/tokenize")
+	public ResponseEntity<List<TokenEntity>> tokenizeVerTwo(@RequestParam("text") String text) {
+        
+		log.info("[KuromojiAnalyticsController]: >>>> @GetMapping :text: {}", text);
+		
+		Map<String, Object> model = new HashMap<String, Object>();
+		Long startTime = System.currentTimeMillis();
+		
+		List<Token> tokenList = kuromojiAnalyticsService.TokenizeVerTwo(text);
+		List<TokenEntity> entityList = new ArrayList<TokenEntity>();
+		StringBuilder sb = new StringBuilder();
+		
+		for (Token token : tokenList) {
+			int i = 0;
+			TokenEntity tokenEntity = new TokenEntity(token);
+			entityList.add(tokenEntity);
+			i++;
+//			sb.append(tokenEntity.getBaseForm());
+//			sb.append(System.lineSeparator());
+		}
+		
+		Long endTime = System.currentTimeMillis();
+		Long processTime = endTime - startTime;
+//		model.put("", entityArray);
+//		model.put("tokens", entityList);
+//		model.put("startTime",startTime.toString());
+//		model.put("endTime",endTime.toString());
+//		model.put("processTime",processTime.toString());
+		
+		return new ResponseEntity< List<TokenEntity> >(entityList, HttpStatus.OK);
+    }
 }

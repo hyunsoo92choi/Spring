@@ -23,10 +23,6 @@ import com.eBayJP.kuromoji.common.entity.request.KuromojiRequestEntity;
 import com.eBayJP.kuromoji.common.entity.response.TokenResponseEntity;
 import com.eBayJP.kuromoji.util.FileUtil;
 
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import springfox.documentation.annotations.ApiIgnore;
-
 
 /**
  * <pre>
@@ -47,7 +43,6 @@ public class KuromojiIpadicController {
 	}
 
 	@RequestMapping(value = "/v1/tokenize", method = RequestMethod.GET)
-	@ApiIgnore
 	public ResponseEntity<Map<String, Object>> tokenize(@RequestParam("text") String text) throws IOException {
 
 		Map<String, Object> model = new HashMap<String, Object>();
@@ -97,10 +92,8 @@ public class KuromojiIpadicController {
 	 * @return TokenResponseEntity
 	 */ 	
 	@RequestMapping(value = { "/tokenize" }, produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
-	@ApiOperation(value = "Kuromoji IPADIC", notes = "Kuromoji IPADIC dictionary")
 	public TokenResponseEntity tokenize(
-			@ApiParam(value = "Access Token", required = true) @RequestParam("access_token") String access_token,
-			@ApiParam(value = "Text [up to 400 characters]", required = true) @RequestParam("text") String text) {
+			@RequestParam("access_token") String access_token,@RequestParam("text") String text) {
 		return new TokenResponseEntity();
 	}
 	

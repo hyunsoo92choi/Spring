@@ -48,7 +48,7 @@ public class KuromojiCommonTests {
         List<EnumValue> enumValues = enumMapperFactory.get(KEY_POS);
 
         //then
-        assertThat(enumValues.size()).isEqualTo(10);
+        assertThat(enumValues.size()).isEqualTo(11);
 
 //        enumValues.forEach(e -> System.out.println(e.toString()));
     }

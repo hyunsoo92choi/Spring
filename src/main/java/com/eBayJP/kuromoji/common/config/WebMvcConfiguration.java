@@ -14,9 +14,11 @@ import com.eBayJP.kuromoji.common.version.VersionedRequestMappingHandlerMapping;
  */
 @Configuration
 public class WebMvcConfiguration extends DelegatingWebMvcConfiguration  {
-
+	
+	
 	@Override
     public VersionedRequestMappingHandlerMapping requestMappingHandlerMapping() {
         return new VersionedRequestMappingHandlerMapping();
     }
+
 }

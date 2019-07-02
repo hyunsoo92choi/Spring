@@ -38,6 +38,7 @@
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -49,11 +50,7 @@
 	      	<artifactId>spring-boot-starter-tomcat</artifactId>
 	      	<scope>provided</scope>
 	    </dependency>
-	    <dependency>
-	      	<groupId>io.springfox</groupId>
-	      	<artifactId>springfox-swagger2</artifactId>
-	      	<version>${springfox.version}</version>
-	    </dependency>
+	    
 	    
 	    <!-- https://mvnrepository.com/artifact/com.atilika.kuromoji/kuromoji-ipadic -->
 		<dependency>
@@ -105,6 +102,16 @@
 		    <version>1.9.3</version>
 		</dependency>
 		
+		<dependency>
+            <groupId>org.springframework.restdocs</groupId>
+            <artifactId>spring-restdocs-mockmvc</artifactId>
+            <scope>test</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+        </dependency>
 		
 	</dependencies>
 	
@@ -130,6 +137,64 @@
 					<source>1.8</source>
 					<target>1.8</target>
 				</configuration>
+			</plugin>
+			<!-- asciidoctor plugin 추가-->
+			<plugin>
+				<groupId>org.asciidoctor</groupId>
+				<artifactId>asciidoctor-maven-plugin</artifactId>
+				<version>1.5.3</version>
+				<executions>
+					<execution>
+						<id>generate-docs</id>
+						<!-- documentation이 패키지 안에 포함될 수 있도록 허용함-->
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>process-asciidoc</goal>
+						</goals>
+						<configuration>
+							<backend>html</backend>
+							<doctype>book</doctype>
+						</configuration>
+					</execution>
+				</executions>
+				<dependencies>
+					<!--자동으로 target/generated-snippets에 snippets 생성-->
+					<dependency>
+						<groupId>org.springframework.restdocs</groupId>
+						<artifactId>spring-restdocs-asciidoctor</artifactId>
+						<version>2.0.2.RELEASE</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+			<plugin>
+				<groupId>org.asciidoctor</groupId>
+				<artifactId>asciidoctor-maven-plugin</artifactId>
+				<!-- … -->
+			</plugin>
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+						<!--생성된 docs를 jar안에 packaging-->
+						<outputDirectory>
+							${project.build.outputDirectory}/static/docs
+						</outputDirectory>
+						<resources>
+							<resource>
+								<directory>
+									${project.build.directory}/generated-docs
+								</directory>
+							</resource>
+						</resources>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>		
 		
