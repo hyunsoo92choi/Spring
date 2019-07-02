@@ -28,7 +28,7 @@ import com.eBayJP.kuromoji.common.code.pos.PosType;
  * @author : hychoi
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = KuromojiCommonTests.class)
+@SpringBootTest(classes = TestConfig.class)
 public class KuromojiCommonTests {
 	
 	private EnumMapper enumMapperFactory;

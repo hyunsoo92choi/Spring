@@ -1,9 +1,13 @@
+
 ########################################################################
-# 로컬                                                                 #                                                                                    #
+# 로컬                                                                                                                                                     #
 ########################################################################
 
 spring:
   profiles: local
+  mvc.static-path-pattern: /static/**
+
+
   
 logging:
   config: classpath:logback-spring.xml
@@ -11,12 +15,6 @@ logging:
     com.eBayJP.kuromoji: debug
     org.springframework: info
 #    DB 있을 경우 나중에 설정    
-#    org.mybatis: debug
-#    jdbc.sqlonly: OFF
-#    jdbc.sqltiming: DEBUG
-#    jdbc.audit: off
-#    jdbc.resultset: off  
-#    jdbc.resultsettable: debug
-#    jdbc.connection: off           
+           
 
 spring.main.allow-bean-definition-overriding: true

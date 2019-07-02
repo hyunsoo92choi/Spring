@@ -15,8 +15,6 @@ import com.atilika.kuromoji.TokenizerBase;
 import com.atilika.kuromoji.ipadic.Tokenizer;
 import com.eBayJP.kuromoji.util.FileUtil;
 
-import lombok.NoArgsConstructor;
-
 /**
  * <pre>
  * com.eBayJP.kuromoji.common.config_KuromojiConfiguration.java
@@ -25,7 +23,6 @@ import lombok.NoArgsConstructor;
  * @author : hychoi
  */
 @Component
-//@NoArgsConstructor
 public class KuromojiConfiguration {
 	
 	private static final Logger log = LoggerFactory.getLogger(KuromojiConfiguration.class);
@@ -55,6 +52,7 @@ public class KuromojiConfiguration {
 		log.info("[KuromojiConfiguration]: >>>> KuromojiTokenizer Bean 등록");
         return new Tokenizer.Builder()
         		.mode(TokenizerBase.Mode.SEARCH)
+        		
         		.build();
     }
 	

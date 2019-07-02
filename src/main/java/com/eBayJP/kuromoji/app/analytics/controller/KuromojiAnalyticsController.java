@@ -36,12 +36,8 @@ public class KuromojiAnalyticsController {
 	
 	private final Logger log = LoggerFactory.getLogger(KuromojiAnalyticsController.class);
 	
-	@Autowired(required=false)
+	@Autowired
 	private KuromojiAnalyticsService kuromojiAnalyticsService;
-	
-//	public KuromojiAnalyticsController(KuromojiAnalyticsService kuromojiAnalyticsService) {
-//	    this.kuromojiAnalyticsService = kuromojiAnalyticsService;
-//	}
 	
 	/**
 	 * <pre>
@@ -75,10 +71,7 @@ public class KuromojiAnalyticsController {
 		Long endTime = System.currentTimeMillis();
 		Long processTime = endTime - startTime;
 		model.put("tokens", entityList);
-//		model.put("tokens", entityList);
-//		model.put("startTime",startTime.toString());
-//		model.put("endTime",endTime.toString());
-//		model.put("processTime",processTime.toString());
+		model.put("processTime",processTime.toString());
 		
 		return new ResponseEntity< Map<String, Object> >(model, HttpStatus.OK);
     }
@@ -140,28 +133,21 @@ public class KuromojiAnalyticsController {
         
 		log.info("[KuromojiAnalyticsController]: >>>> @GetMapping :text: {}", text);
 		
-		Map<String, Object> model = new HashMap<String, Object>();
 		Long startTime = System.currentTimeMillis();
 		
 		List<Token> tokenList = kuromojiAnalyticsService.TokenizeVerTwo(text);
 		List<TokenEntity> entityList = new ArrayList<TokenEntity>();
-		StringBuilder sb = new StringBuilder();
 		
 		for (Token token : tokenList) {
 			int i = 0;
 			TokenEntity tokenEntity = new TokenEntity(token);
 			entityList.add(tokenEntity);
 			i++;
-//			sb.append(tokenEntity.getBaseForm());
-//			sb.append(System.lineSeparator());
 		}
 		
 		Long endTime = System.currentTimeMillis();
 		Long processTime = endTime - startTime;
-//		model.put("", entityArray);
 //		model.put("tokens", entityList);
-//		model.put("startTime",startTime.toString());
-//		model.put("endTime",endTime.toString());
 //		model.put("processTime",processTime.toString());
 		
 		return new ResponseEntity< List<TokenEntity> >(entityList, HttpStatus.OK);

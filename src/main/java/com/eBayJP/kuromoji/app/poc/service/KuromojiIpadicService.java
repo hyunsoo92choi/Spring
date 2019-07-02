@@ -64,7 +64,7 @@ public class KuromojiIpadicService {
 //		List<TokenEntity> entityList = getTokenEntityList(tokens);
 		return tokens;
 	}
-	@Deprecated
+	
 	private Tokenizer makeTokenizer(String userDictionaryEntry) throws IOException {
 		
         return new Tokenizer.Builder()

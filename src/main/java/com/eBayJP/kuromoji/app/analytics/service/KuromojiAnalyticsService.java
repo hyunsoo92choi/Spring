@@ -66,7 +66,7 @@ public class KuromojiAnalyticsService {
 	
 	public List<Token> TokenizeVerTwo(String text) {
 		log.info("[KuromojiAnalyticsService]: >>>> TokenizeVerTwo text: {}", text);
-
+		
 		List<Token> tokens = ebayJPTokenizer.tokenize(text)
 				.stream()
 				.filter(token -> isValidate(token))

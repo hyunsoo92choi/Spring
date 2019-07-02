@@ -64,9 +64,7 @@ public class KuromojiAnalyticsControllerTest {
                 preprocessResponse(prettyPrint())
         );
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.context)
-                .apply(documentationConfiguration(this.restDocumentation)
-//                        .uris().withScheme("https").withHost("ebayjapan.co.jp").withPort(443)
-                        )
+                .apply( documentationConfiguration(this.restDocumentation) )
                 .alwaysDo(document)
                 .build();
     }
@@ -100,6 +98,7 @@ public class KuromojiAnalyticsControllerTest {
 						));
     }
 	
+	@Deprecated
 	private static final List<FieldDescriptor> TOKENS_FIELD_DESCRIPTORS = Arrays.asList(
 			PayloadDocumentation.fieldWithPath("surface").description("Surface")
 					.type(JsonFieldType.STRING),
@@ -132,6 +131,4 @@ public class KuromojiAnalyticsControllerTest {
 					.type(JsonFieldType.BOOLEAN),					
 			PayloadDocumentation.fieldWithPath("allFeatures").description("allFeatures")
 					.type(JsonFieldType.STRING));
-
-	
 }
