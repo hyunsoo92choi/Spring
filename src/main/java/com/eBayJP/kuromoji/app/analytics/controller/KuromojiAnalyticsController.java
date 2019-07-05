@@ -21,6 +21,7 @@ import com.atilika.kuromoji.ipadic.Token;
 import com.eBayJP.kuromoji.app.analytics.service.KuromojiAnalyticsService;
 import com.eBayJP.kuromoji.common.entity.TokenEntity;
 import com.eBayJP.kuromoji.common.entity.request.KuromojiRequestEntity;
+import com.eBayJP.kuromoji.common.entity.response.TokenResponseEntity;
 import com.eBayJP.kuromoji.common.version.ApiVersion;
 
 /**
@@ -59,21 +60,23 @@ public class KuromojiAnalyticsController {
 	 */ 
 	@ApiVersion(1)
 	@GetMapping(value = "/tokenize")
-    public ResponseEntity<Map<String, Object>> tokenize(@RequestParam("text") String text) {
+    public ResponseEntity<TokenResponseEntity> tokenize(@RequestParam("text") String text) {
         
 		log.info("[KuromojiAnalyticsController]: >>>> @GetMapping :text: {}", text);
 		
 		Map<String, Object> model = new HashMap<String, Object>();
 		Long startTime = System.currentTimeMillis();
 		
-		List<TokenEntity> entityList = kuromojiAnalyticsService.Tokenize(text);
+		List<TokenEntity> entityList = kuromojiAnalyticsService.tokenize(text);
 		
 		Long endTime = System.currentTimeMillis();
 		Long processTime = endTime - startTime;
 		model.put("tokens", entityList);
 		model.put("processTime",processTime.toString());
 		
-		return new ResponseEntity< Map<String, Object> >(model, HttpStatus.OK);
+		TokenResponseEntity entity = new TokenResponseEntity(model);
+		
+		return new ResponseEntity< TokenResponseEntity >(entity, HttpStatus.OK);
     }
 	
 	/**
@@ -111,7 +114,9 @@ public class KuromojiAnalyticsController {
 		
 		Long startTime = System.currentTimeMillis();
 		
-		List<TokenEntity> entityList = kuromojiAnalyticsService.Tokenize(sb.toString());
+//		Map<String, Object> model = kuromojiAnalyticsService.tokenizeJapanese(sb.toString());
+		
+		List<TokenEntity> entityList = kuromojiAnalyticsService.tokenizer(sb.toString());
 		
 		Long endTime = System.currentTimeMillis();
 		Long processTime = endTime - startTime;
@@ -122,34 +127,8 @@ public class KuromojiAnalyticsController {
 		model.put("startTime",startTime.toString());
 		model.put("endTime",endTime.toString());
 		model.put("processTime",processTime.toString());
-		System.out.println(processTime);
 		
 		return new ResponseEntity< Map<String, Object> >(model, HttpStatus.OK);
 	}
 	
-	@ApiVersion(2)
-	@GetMapping(value = "/tokenize")
-	public ResponseEntity<List<TokenEntity>> tokenizeVerTwo(@RequestParam("text") String text) {
-        
-		log.info("[KuromojiAnalyticsController]: >>>> @GetMapping :text: {}", text);
-		
-		Long startTime = System.currentTimeMillis();
-		
-		List<Token> tokenList = kuromojiAnalyticsService.TokenizeVerTwo(text);
-		List<TokenEntity> entityList = new ArrayList<TokenEntity>();
-		
-		for (Token token : tokenList) {
-			int i = 0;
-			TokenEntity tokenEntity = new TokenEntity(token);
-			entityList.add(tokenEntity);
-			i++;
-		}
-		
-		Long endTime = System.currentTimeMillis();
-		Long processTime = endTime - startTime;
-//		model.put("tokens", entityList);
-//		model.put("processTime",processTime.toString());
-		
-		return new ResponseEntity< List<TokenEntity> >(entityList, HttpStatus.OK);
-    }
 }

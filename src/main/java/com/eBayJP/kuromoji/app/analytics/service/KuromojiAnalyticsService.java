@@ -1,7 +1,9 @@
 package com.eBayJP.kuromoji.app.analytics.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -31,6 +33,10 @@ public class KuromojiAnalyticsService {
 	@Autowired
 	@Qualifier("EbayJPTokenizer")
 	private Tokenizer ebayJPTokenizer;
+	
+	@Autowired
+	@Qualifier("KuromojiTokenizer")
+	private Tokenizer tokenizer;
 
 	/**
 	 * <pre>
@@ -50,7 +56,7 @@ public class KuromojiAnalyticsService {
 	 * @param text
 	 * @return
 	 */ 
-	public List<TokenEntity> Tokenize(String text) {
+	public List<TokenEntity> tokenize(String text) {
 		
 		log.info("[KuromojiAnalyticsService]: >>>> Tokenize text: {}", text);
 
@@ -64,15 +70,40 @@ public class KuromojiAnalyticsService {
 		return entityList;
 	}
 	
-	public List<Token> TokenizeVerTwo(String text) {
-		log.info("[KuromojiAnalyticsService]: >>>> TokenizeVerTwo text: {}", text);
+	public List<TokenEntity> tokenizer(String text) {
 		
-		List<Token> tokens = ebayJPTokenizer.tokenize(text)
+		log.info("[KuromojiAnalyticsService]: >>>> Tokenize text: {}", text);
+
+		List<Token> tokens = tokenizer.tokenize(text)
 				.stream()
 				.filter(token -> isValidate(token))
 				.collect(Collectors.toList());
 		
-		return tokens;
+		List<TokenEntity> entityList = getTokenEntityList(tokens);
+		
+		return entityList;
+	}
+	
+	public Map<String, Object> tokenizeJapanese(String text) {
+		
+		log.info("[KuromojiAnalyticsService]: >>>> TokenizeVerTwo text: {}", text);
+		
+		Map<String, String> languages = this.getLanguages(text);
+		String japanese = languages.get("japanese");
+		String others = languages.get("others");
+		
+		List<Token> tokens = ebayJPTokenizer.tokenize(japanese)
+				.stream()
+				.filter(token -> isValidate(token))
+				.collect(Collectors.toList());
+		
+		List<TokenEntity> entityList = getTokenEntityList(tokens);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("tokens", entityList);
+		map.put("others", others);
+		
+		return map;
 	}
 
 	private boolean isValidate(Token token) {
@@ -101,5 +132,44 @@ public class KuromojiAnalyticsService {
 
 		return entityList;
 	}
-
+	
+	
+	private Map<String, String> getLanguages(String text) {
+		
+		Map<String, String> model = new HashMap<String, String>();
+		StringBuilder japanese = new StringBuilder();
+		StringBuilder others = new StringBuilder();
+		
+		for (char c : text.toCharArray()) {
+			if (isJapanese(c)) {
+				japanese.append(c);
+			} else {
+				others.append(c);
+			}
+        }
+		log.info("[KuromojiAnalyticsService]: >>>> japanese: {}", japanese);
+		log.info("[KuromojiAnalyticsService]: >>>> others: {}", others);
+		
+		model.put("japanese", japanese.toString());
+		model.put("others", others.toString());
+		
+		return model;
+	}
+	
+	private boolean isJapanese(char c) {
+		
+		boolean hasJapanese = false;
+		
+		if ( Character.UnicodeBlock.of(c) == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS
+                || Character.UnicodeBlock.of(c) == Character.UnicodeBlock.HIRAGANA
+                || Character.UnicodeBlock.of(c) == Character.UnicodeBlock.KATAKANA
+                || Character.UnicodeBlock.of(c) == Character.UnicodeBlock.HALFWIDTH_AND_FULLWIDTH_FORMS
+                || Character.UnicodeBlock.of(c) == Character.UnicodeBlock.HALFWIDTH_AND_FULLWIDTH_FORMS
+                || Character.UnicodeBlock.of(c) == Character.UnicodeBlock.CJK_SYMBOLS_AND_PUNCTUATION) {
+			hasJapanese = true;
+        }
+		
+		return hasJapanese;
+	}
+	
 }

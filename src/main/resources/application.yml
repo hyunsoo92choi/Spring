@@ -1,4 +1,22 @@
+server: 
+  port: 8050
+  tomcat:
+    uri-encoding: UTF-8
+  servlet.session:
+    timeout: 800000000
 
+tomcat:
+  ajp:
+    protocol: AJP/1.3
+    port: 8029
+
+spring:
+  application:
+    name: eBay Japan Morpheme analyzer
+  profiles:
+    active: local
+
+---    
 ########################################################################
 # 로컬                                                                                                                                                     #
 ########################################################################
@@ -6,15 +24,25 @@
 spring:
   profiles: local
   mvc.static-path-pattern: /static/**
-
-
+  server:
+    port: 8050
+---
+spring:
+    profiles: dev
+server:
+    port: 8081
+---
+spring:
+    profiles: real
+server:
+    port: 80
   
 logging:
   config: classpath:logback-spring.xml
   level:
     com.eBayJP.kuromoji: debug
     org.springframework: info
-#    DB 있을 경우 나중에 설정    
+    
            
 
 spring.main.allow-bean-definition-overriding: true

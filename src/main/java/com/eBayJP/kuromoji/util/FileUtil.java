@@ -5,15 +5,14 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
-
-import com.eBayJP.kuromoji.app.analytics.controller.KuromojiAnalyticsController;
 
 /**
  * <pre>
@@ -53,21 +52,26 @@ public class FileUtil {
 		String result = null;
 		
 		try {
-			
-			ClassPathResource cpr = new ClassPathResource("ebayJPDictionary.csv");
-			
-			System.out.println("파일절대경로+파일명:"+ cpr.getURI().getPath().substring(1));
+			String url = "http://notice.image-qoo10.jp/nlp/morph_custom_dictonary.csv";
+			URL rowdata = new URL(url);
+			URLConnection data = rowdata.openConnection();
+//	        Scanner input = new Scanner(data.getInputStream());
+			BufferedReader br = new BufferedReader(new InputStreamReader(data.getInputStream(), StandardCharsets.UTF_8));
+	        StringBuilder sb = new StringBuilder();
+	        String line = null;
 
-			StringBuilder sb = new StringBuilder();
-			BufferedReader br = new BufferedReader(new InputStreamReader(cpr.getInputStream(), StandardCharsets.UTF_8));
-
-			String line = br.readLine();
-
-			while (line != null) {
+	        if (br.ready())
+	        	line = br.readLine();
+	        
+	        while (line != null) {
 				sb.append(line.trim());
 				sb.append(ls);
 				line = br.readLine();
 			}
+			
+//			ClassPathResource cpr = new ClassPathResource("ebayJPDictionary.csv");
+//			System.out.println("파일절대경로+파일명:"+ cpr.getURI().getPath().substring(1));
+//			BufferedReader br = new BufferedReader(new InputStreamReader(cpr.getInputStream(), StandardCharsets.UTF_8));
 			result = sb.toString();
 			
 		} catch (FileNotFoundException fileException) {

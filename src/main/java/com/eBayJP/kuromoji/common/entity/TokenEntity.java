@@ -29,6 +29,8 @@ public class TokenEntity implements Serializable {
 //	private String[] allFeaturesArray;
 	private Boolean known;
 	private String allFeatures;
+	private String others;
+	
 
 	/* Constructor */
 	public TokenEntity(Token token) {
