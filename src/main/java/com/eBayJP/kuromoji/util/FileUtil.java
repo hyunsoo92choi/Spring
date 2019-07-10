@@ -25,6 +25,7 @@ import org.springframework.core.io.ClassPathResource;
 public class FileUtil {
 
 	public static String ebayJapanDictionary = getUserDictionary();
+	public static String ebayJapanBrandDictionary = getBrandDictionary();
 	
 	/**
 	 * <pre>
@@ -68,10 +69,40 @@ public class FileUtil {
 				sb.append(ls);
 				line = br.readLine();
 			}
+			result = sb.toString();
 			
-//			ClassPathResource cpr = new ClassPathResource("ebayJPDictionary.csv");
-//			System.out.println("파일절대경로+파일명:"+ cpr.getURI().getPath().substring(1));
-//			BufferedReader br = new BufferedReader(new InputStreamReader(cpr.getInputStream(), StandardCharsets.UTF_8));
+		} catch (FileNotFoundException fileException) {
+			fileException.printStackTrace();
+		} catch (UnsupportedEncodingException unsupportedEncodingException) {
+			unsupportedEncodingException.printStackTrace();
+		} catch (IOException ioException) {
+			ioException.printStackTrace();
+		}
+
+		return result;
+	}
+	
+	public static String getBrandDictionary() {
+
+		String ls = System.getProperty("line.separator");
+		String result = null;
+		
+		try {
+			String url = "http://notice.image-qoo10.jp/nlp/morph_brand_custom_dictonary.csv";
+			URL rowdata = new URL(url);
+			URLConnection data = rowdata.openConnection();
+			BufferedReader br = new BufferedReader(new InputStreamReader(data.getInputStream(), StandardCharsets.UTF_8));
+	        StringBuilder sb = new StringBuilder();
+	        String line = null;
+
+	        if (br.ready())
+	        	line = br.readLine();
+	        
+	        while (line != null) {
+				sb.append(line.trim());
+				sb.append(ls);
+				line = br.readLine();
+			}
 			result = sb.toString();
 			
 		} catch (FileNotFoundException fileException) {

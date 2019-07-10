@@ -37,6 +37,10 @@ public class KuromojiAnalyticsService {
 	@Autowired
 	@Qualifier("KuromojiTokenizer")
 	private Tokenizer tokenizer;
+	
+	@Autowired
+	@Qualifier("EbayJPBrandDicTokenizer")
+	private Tokenizer ebayJPBrandDicTokenizer;
 
 	/**
 	 * <pre>
@@ -93,6 +97,28 @@ public class KuromojiAnalyticsService {
 		String others = languages.get("others");
 		
 		List<Token> tokens = ebayJPTokenizer.tokenize(japanese)
+				.stream()
+				.filter(token -> isValidate(token))
+				.collect(Collectors.toList());
+		
+		List<TokenEntity> entityList = getTokenEntityList(tokens);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("tokens", entityList);
+		map.put("others", others);
+		
+		return map;
+	}
+	
+public Map<String, Object> tokenizeBrandDic(String text) {
+		
+		log.info("[KuromojiAnalyticsService]: >>>> tokenizeBrandDic text: {}", text);
+		
+		Map<String, String> languages = this.getLanguages(text);
+		String japanese = languages.get("japanese");
+		String others = languages.get("others");
+		
+		List<Token> tokens = ebayJPBrandDicTokenizer.tokenize(japanese)
 				.stream()
 				.filter(token -> isValidate(token))
 				.collect(Collectors.toList());

@@ -89,6 +89,38 @@ public class KuromojiConfiguration {
         		.userDictionary(makeUserDictionaryStream(FileUtil.ebayJapanDictionary))
         		.build();
     }
+	
+	/**
+	 * <pre>
+	 * 1. 개요 : EbayJPBrandDicTokenizer Bean 정의
+	 * 2. 처리내용 : eBay Japan Brand 사전을 이용한 Tokenizer를 Bean으로 등록하여 사용하고자
+	 * 				 EbayJPBrandDicTokenizer를 생성하여 Bean 등록
+	 * </pre>
+	 * @Method Name : ebayBrandTokenizer
+	 * @date : 2019. 7. 10.
+	 * @author : hychoi
+	 * @history : 
+	 *	-----------------------------------------------------------------------
+	 *	변경일				작성자						변경내용  
+	 *	----------- ------------------- ---------------------------------------
+	 *	2019. 7. 10.		hychoi				최초 작성 
+	 *	-----------------------------------------------------------------------
+	 * 
+	 * @return
+	 * @throws Throwable
+	 */ 
+	@Bean(name="EbayJPBrandDicTokenizer")
+	@RefreshScope
+	@PostConstruct
+    public Tokenizer ebayBrandTokenizer() throws Throwable {
+		
+		log.info("[KuromojiConfiguration]: >>>> EbayJPBrandDicTokenizer Bean 등록");
+		
+        return new Tokenizer.Builder()
+        		.mode(TokenizerBase.Mode.SEARCH)
+        		.userDictionary(makeUserDictionaryStream(FileUtil.getBrandDictionary()))
+        		.build();
+    }
 
 	/**
 	 * <pre>

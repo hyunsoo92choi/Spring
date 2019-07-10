@@ -114,16 +114,41 @@ public class KuromojiAnalyticsController {
 		
 		Long startTime = System.currentTimeMillis();
 		
-//		Map<String, Object> model = kuromojiAnalyticsService.tokenizeJapanese(sb.toString());
-		
-		List<TokenEntity> entityList = kuromojiAnalyticsService.tokenizer(sb.toString());
+		Map<String, Object> model = kuromojiAnalyticsService.tokenizeJapanese(sb.toString());
 		
 		Long endTime = System.currentTimeMillis();
 		Long processTime = endTime - startTime;
 		
-		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("startTime",startTime.toString());
+		model.put("endTime",endTime.toString());
+		model.put("processTime",processTime.toString());
 		
-		model.put("tokens", entityList);
+		return new ResponseEntity< Map<String, Object> >(model, HttpStatus.OK);
+	}
+	
+	@ApiVersion(1)
+	@PostMapping(value = "/tokenize")
+	public ResponseEntity<Map<String, Object>> tokenizeByBrandDic(@RequestBody KuromojiRequestEntity requestKuromojiEntity) {
+		
+		List<String> textList = requestKuromojiEntity.getTexts();
+		
+		StringBuilder sb = new StringBuilder(textList.size());
+		
+		textList.forEach(text -> {
+	        sb.append(text);
+	        sb.append(System.lineSeparator());
+	    });
+		
+		log.info("[KuromojiAnalyticsController]: >>>> @@tokenizeByBrandDic :text: {}", sb.toString());
+		
+		Long startTime = System.currentTimeMillis();
+		
+		Map<String, Object> model = kuromojiAnalyticsService.tokenizeBrandDic(sb.toString());
+		
+		Long endTime = System.currentTimeMillis();
+		Long processTime = endTime - startTime;
+		
+		
 		model.put("startTime",startTime.toString());
 		model.put("endTime",endTime.toString());
 		model.put("processTime",processTime.toString());
