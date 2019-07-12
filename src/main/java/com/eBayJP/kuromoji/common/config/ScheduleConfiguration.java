@@ -28,7 +28,7 @@ public class ScheduleConfiguration implements ApplicationContextAware {
 	
 	private ApplicationContext applicationContext;
 	
-	@Scheduled(cron = "0 0 0-23 * * *")
+	@Scheduled(cron = "0 0/30 0-23 * * *")
     @PostConstruct
     void init(){
 		
