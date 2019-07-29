@@ -290,8 +290,8 @@ public class CommonService {
 	
 	/**
 	 * <pre>
-	 * 1. 개요 : 전각처리 된 알파벳이 있는지 확인하는 메서드
-	 * 2. 처리내용 : 전각처리 된 알파벳이 있으면 true 아니면 false 리턴
+	 * 1. 개요 : 전각처리 된 알파벳과 숫자들이 있는지 확인하는 메서드
+	 * 2. 처리내용 : 전각처리 된 알파벳과 숫자들이 있으면 true 아니면 false 리턴
 	 * </pre>
 	 * @Method Name : isFullWidthEngs
 	 * @date : 2019. 7. 29.
@@ -310,6 +310,24 @@ public class CommonService {
 		return String.valueOf(c).matches("[\\uff01-\\uff5E | \\uFF10-\\uFF19]*");
 	}
 	
+	/**
+	 * <pre>
+	 * 1. 개요 : 반각 카타카나 문자가 있는지 확인하는 메서드
+	 * 2. 처리내용 : 반각처리 된 카타카나 문자가 있으면 true 아니면 false 리턴
+	 * </pre>
+	 * @Method Name : isHalfWidthKatakanas
+	 * @date : 2019. 7. 29.
+	 * @author : hychoi
+	 * @history : 
+	 *	-----------------------------------------------------------------------
+	 *	변경일				작성자						변경내용  
+	 *	----------- ------------------- ---------------------------------------
+	 *	2019. 7. 29.		hychoi				최초 작성 
+	 *	-----------------------------------------------------------------------
+	 * 
+	 * @param c
+	 * @return
+	 */ 
 	public boolean isHalfWidthKatakanas(char c) {
 		return String.valueOf(c).matches("[\\uFF66-\\uFF9F]*");
 	}
