@@ -14,10 +14,10 @@ import org.springframework.stereotype.Service;
 
 import com.atilika.kuromoji.ipadic.Token;
 import com.atilika.kuromoji.ipadic.Tokenizer;
-import com.eBayJP.kuromoji.common.code.pos.NounType;
 import com.eBayJP.kuromoji.common.code.pos.PosType;
 import com.eBayJP.kuromoji.common.code.pos.SymbolsType;
 import com.eBayJP.kuromoji.common.entity.TokenEntity;
+import com.ibm.icu.text.Transliterator;
 
 /**
  * <pre>
@@ -30,8 +30,10 @@ import com.eBayJP.kuromoji.common.entity.TokenEntity;
 @Service
 public class CommonService {
 
-	private final static Logger log = LoggerFactory.getLogger(CommonService.class);
-	private final static String WHITESPACE = " ";
+	private static final Logger log = LoggerFactory.getLogger(CommonService.class);
+	private static final String WHITESPACE = " ";
+	private static final Transliterator transliterator = Transliterator.getInstance("Fullwidth-Halfwidth");
+	private static final Transliterator kanaTransliterator = Transliterator.getInstance("Halfwidth-Fullwidth");
 	@Autowired
 	@Qualifier("KuromojiTokenizer")
 	private Tokenizer tokenizer;
@@ -123,9 +125,6 @@ public class CommonService {
 		StringBuilder others = new StringBuilder();
 		boolean isJapanese = false;
 
-		char[] s = text.toCharArray();
-		int len = s.length;
-
 		for (char c : text.toCharArray()) {
 			// 일본어 이거나, 이전에 isJapanese 이면서, \r 일 경우 공백 넣어 줌
 			if (isJapanese(c) || (isJapanese && '\r' == c)) {
@@ -141,7 +140,14 @@ public class CommonService {
 				} else
 					if (isJapanese)
 						others.append(WHITESPACE);
-					others.append(c);
+					if (isFullWidthEngAndNums(c)) {
+						others.append(transliterator.transliterate(String.valueOf(c)));
+					} else if (isHalfWidthKatakanas(c)) {
+						others.append(kanaTransliterator.transliterate(String.valueOf(c)));
+					} else {
+						others.append(c);
+					}
+					
 				isJapanese = false;
 			}
 		}
@@ -180,8 +186,6 @@ public class CommonService {
 		if (Character.UnicodeBlock.of(c) == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS
 				|| Character.UnicodeBlock.of(c) == Character.UnicodeBlock.HIRAGANA
 				|| Character.UnicodeBlock.of(c) == Character.UnicodeBlock.KATAKANA
-				|| Character.UnicodeBlock.of(c) == Character.UnicodeBlock.HALFWIDTH_AND_FULLWIDTH_FORMS
-				|| Character.UnicodeBlock.of(c) == Character.UnicodeBlock.HALFWIDTH_AND_FULLWIDTH_FORMS
 				|| Character.UnicodeBlock.of(c) == Character.UnicodeBlock.CJK_SYMBOLS_AND_PUNCTUATION) {
 			hasJapanese = true;
 		}
@@ -212,13 +216,14 @@ public class CommonService {
 
 		boolean result = false;
 
-		// 동사, 명사, 형용사, 형용동사, 커스텀사전, 또는 유효한 17까지 부호
+		// 동사, 명사, 형용사, 형용동사, 접두사, 커스텀사전, 또는 유효한 17까지 부호
 		if ( PosType.VERB.getCodeName().equals(token.getPartOfSpeechLevel1())				
 				|| PosType.ADJE.getCodeName().equals(token.getPartOfSpeechLevel1())
 				|| PosType.ADVB.getCodeName().equals(token.getPartOfSpeechLevel1())
 				|| PosType.CUST.getCodeName().equals(token.getPartOfSpeechLevel1())
 				|| PosType.NOUN.getCodeName().equals(token.getPartOfSpeechLevel1())
 				|| PosType.ADVE.getCodeName().equals(token.getPartOfSpeechLevel1())
+				|| PosType.PREF.getCodeName().equals(token.getPartOfSpeechLevel1())
 				|| ( isUsableSymbol(token)) )
 			result = true;
 
@@ -249,6 +254,7 @@ public class CommonService {
 	 *	변경일				작성자						변경내용  
 	 *	----------- ------------------- ---------------------------------------
 	 *	2019. 7. 29.		hychoi				최초 작성 
+	 *	2019. 7. 29.		hychoi				소괄호 제외
 	 *	-----------------------------------------------------------------------
 	 * 
 	 * @param token
@@ -274,13 +280,37 @@ public class CommonService {
 				|| SymbolsType.PERI.getCodeName().equals(token.getSurface())
 				|| SymbolsType.PLUS.getCodeName().equals(token.getSurface())
 				|| SymbolsType.QUES.getCodeName().equals(token.getSurface())
-				|| SymbolsType.RPAR.getCodeName().equals(token.getSurface())
-				|| SymbolsType.SHAR.getCodeName().equals(token.getSurface())
 				|| SymbolsType.SLAS.getCodeName().equals(token.getSurface())
 				)
 			result = true;
 		
 		return result;
 		
+	}
+	
+	/**
+	 * <pre>
+	 * 1. 개요 : 전각처리 된 알파벳이 있는지 확인하는 메서드
+	 * 2. 처리내용 : 전각처리 된 알파벳이 있으면 true 아니면 false 리턴
+	 * </pre>
+	 * @Method Name : isFullWidthEngs
+	 * @date : 2019. 7. 29.
+	 * @author : hychoi
+	 * @history : 
+	 *	-----------------------------------------------------------------------
+	 *	변경일				작성자						변경내용  
+	 *	----------- ------------------- ---------------------------------------
+	 *	2019. 7. 29.		hychoi				최초 작성 
+	 *	-----------------------------------------------------------------------
+	 * 
+	 * @param c
+	 * @return boolean
+	 */ 
+	public boolean isFullWidthEngAndNums(char c) {
+		return String.valueOf(c).matches("[\\uff01-\\uff5E | \\uFF10-\\uFF19]*");
+	}
+	
+	public boolean isHalfWidthKatakanas(char c) {
+		return String.valueOf(c).matches("[\\uFF66-\\uFF9F]*");
 	}
 }

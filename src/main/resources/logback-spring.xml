@@ -30,7 +30,7 @@
 		<file>${LOG_FILE}-out.log</file>
 		 <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
 		      <!-- rollover daily -->
-		      <fileNamePattern>${LOG_FILE}-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+		      <fileNamePattern>%d{yyyy-MM-dd}.%i.log</fileNamePattern>
 		       <!-- each file should be at most 100MB, keep 60 days worth of history, but at most 20GB -->
 		      <maxFileSize>300MB</maxFileSize>
 			  <maxHistory>20</maxHistory>
