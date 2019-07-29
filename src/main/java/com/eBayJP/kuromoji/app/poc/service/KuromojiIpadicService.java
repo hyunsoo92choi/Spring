@@ -48,17 +48,17 @@ public class KuromojiIpadicService {
 
 		return tokens;
 	}
-	
+	@Deprecated
 	public List<Token> getUserDicToken(String text) {
 		
 		Tokenizer tokenizer = null;
 		
-		try {
-			tokenizer = makeTokenizer(userDictionary);
-		} catch (IOException e) {
-			
-			e.printStackTrace();
-		}
+//		try {
+//			//tokenizer = makeTokenizer(userDictionary);
+//		} catch (IOException e) {
+//			
+//			e.printStackTrace();
+//		}
 		
 		List<Token> tokens = tokenizer.tokenize(text);
 //		List<TokenEntity> entityList = getTokenEntityList(tokens);
@@ -126,6 +126,7 @@ public class KuromojiIpadicService {
      * @param tokenEntity
      * @return
      */ 
+    @Deprecated
     private boolean isValidate(TokenEntity tokenEntity) {
     	boolean result = false;
     	
@@ -159,7 +160,7 @@ public class KuromojiIpadicService {
         return this.getClass().getClassLoader().getResourceAsStream(resource);
     }
 	
-	
+	@Deprecated
     public List<Token> getUserDicTokensForGoodsName(String goodsNm) {
     	
     	Tokenizer tokenizer = null;

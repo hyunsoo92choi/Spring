@@ -1,5 +1,5 @@
 server: 
-  port: 2222
+  port: 80
   tomcat:
     uri-encoding: UTF-8
   servlet.session:
@@ -35,7 +35,7 @@ server:
 spring:
     profiles: real
 server:
-    port: 2222
+    port: 80
   
 logging:
   config: classpath:logback-spring.xml

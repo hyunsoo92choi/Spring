@@ -41,7 +41,7 @@ public class KuromojiIpadicController {
 	public KuromojiIpadicController(KuromojiIpadicService kuromojiIpadicService) {
 	    this.kuromojiIpadicService = kuromojiIpadicService;
 	}
-
+	@Deprecated
 	@RequestMapping(value = "/v1/tokenize", method = RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> tokenize(@RequestParam("text") String text) throws IOException {
 
@@ -116,6 +116,7 @@ public class KuromojiIpadicController {
 	 * @return ResponseEntity
 	 * @throws IOException
 	 */ 
+	@Deprecated
 	@RequestMapping(value = "/v1/tokenize", method = RequestMethod.POST)
 	public ResponseEntity<Map<String, Object>> tokenizeByPost(@RequestBody KuromojiRequestEntity requestKuromojiEntity) throws IOException {
 		
@@ -167,6 +168,7 @@ public class KuromojiIpadicController {
 	 * @return ResponseEntity
 	 * @throws IOException
 	 */ 
+	@Deprecated
 	@RequestMapping(value = "/v1/tokenizeFromFile", method = RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> tokenizeFromFile() throws IOException {
 		

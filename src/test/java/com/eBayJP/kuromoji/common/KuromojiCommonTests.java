@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.eBayJP.kuromoji.common.code.mapper.EnumMapper;
@@ -28,7 +29,7 @@ import com.eBayJP.kuromoji.common.code.pos.PosType;
  * @author : hychoi
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = TestConfig.class)
+@ComponentScan(basePackages = "com.eBayJP.kuromoji")
 public class KuromojiCommonTests {
 	
 	private EnumMapper enumMapperFactory;

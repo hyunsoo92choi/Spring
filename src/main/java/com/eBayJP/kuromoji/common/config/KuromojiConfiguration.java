@@ -52,7 +52,6 @@ public class KuromojiConfiguration {
 		log.info("[KuromojiConfiguration]: >>>> KuromojiTokenizer Bean 등록");
         return new Tokenizer.Builder()
         		.mode(TokenizerBase.Mode.SEARCH)
-        		
         		.build();
     }
 	

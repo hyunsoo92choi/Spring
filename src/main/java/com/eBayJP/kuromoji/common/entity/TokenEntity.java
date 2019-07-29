@@ -49,4 +49,10 @@ public class TokenEntity implements Serializable {
 		this.known = token.isKnown();
 		this.allFeatures = token.getAllFeatures();
 	}
+	
+	public TokenEntity(String surface) {
+		this.surface = surface;
+		this.partOfSpeechLevel1 = "CUSTOM";
+		this.reading = surface;
+	}
 }

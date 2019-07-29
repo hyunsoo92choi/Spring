@@ -1,6 +1,7 @@
 package com.eBayJP.kuromoji.app.analytics.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,8 +15,9 @@ import org.springframework.stereotype.Service;
 
 import com.atilika.kuromoji.ipadic.Token;
 import com.atilika.kuromoji.ipadic.Tokenizer;
-import com.eBayJP.kuromoji.common.code.pos.PosType;
 import com.eBayJP.kuromoji.common.entity.TokenEntity;
+import com.eBayJP.kuromoji.common.service.CommonService;
+import com.ibm.icu.text.Transliterator;
 
 /**
  * <pre>
@@ -41,6 +43,13 @@ public class KuromojiAnalyticsService {
 	@Autowired
 	@Qualifier("EbayJPBrandDicTokenizer")
 	private Tokenizer ebayJPBrandDicTokenizer;
+	
+	@Autowired
+	private CommonService commonService;
+	
+	private List<Token> keywords = new ArrayList<Token>();
+	
+	private final Transliterator transliterator = Transliterator.getInstance("Fullwidth-Halfwidth");
 
 	/**
 	 * <pre>
@@ -66,10 +75,10 @@ public class KuromojiAnalyticsService {
 
 		List<Token> tokens = ebayJPTokenizer.tokenize(text)
 				.stream()
-				.filter(token -> isValidate(token))
+				.filter(token -> commonService.isUsableSpeechLevel(token))
 				.collect(Collectors.toList());
 		
-		List<TokenEntity> entityList = getTokenEntityList(tokens);
+		List<TokenEntity> entityList = commonService.getTokenEntityList(tokens);
 		
 		return entityList;
 	}
@@ -80,50 +89,118 @@ public class KuromojiAnalyticsService {
 
 		List<Token> tokens = tokenizer.tokenize(text)
 				.stream()
-				.filter(token -> isValidate(token))
+				.filter(token -> commonService.isUsableSpeechLevel(token))
 				.collect(Collectors.toList());
 		
-		List<TokenEntity> entityList = getTokenEntityList(tokens);
+		List<TokenEntity> entityList = commonService.getTokenEntityList(tokens);
 		
 		return entityList;
 	}
 	
-	public Map<String, Object> tokenizeJapanese(String text) {
+	public Map<String, Object> tokenizeKeyword(String text) {
 		
 		log.info("[KuromojiAnalyticsService]: >>>> TokenizeVerTwo text: {}", text);
 		
-		Map<String, String> languages = this.getLanguages(text);
+		Map<String, String> languages = commonService.getLanguages(text);
 		String japanese = languages.get("japanese");
 		String others = languages.get("others");
 		
-		List<Token> tokens = ebayJPTokenizer.tokenize(japanese)
-				.stream()
-				.filter(token -> isValidate(token))
-				.collect(Collectors.toList());
+		getKeyWord(japanese);
+		getKeyWord(others);
 		
-		List<TokenEntity> entityList = getTokenEntityList(tokens);
-		
+		List<TokenEntity> EntityList = commonService.getTokenEntityList(keywords);
+
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("tokens", entityList);
-		map.put("others", others);
+		map.put("EntityList", EntityList);
+//		map.put("others", others);
 		
 		return map;
 	}
 	
-public Map<String, Object> tokenizeBrandDic(String text) {
+	public Map<String, List<TokenEntity>> tokenizeUserDic(String text) {
+
+		log.info("[KuromojiAnalyticsService]: >>>> tokenizeUserDic text: {}", text);
+
+		Map<String, String> languages = commonService.getLanguages(text);
+		String japanese = languages.get("japanese");
+		String others = languages.get("others");
+
+		List<Token> tokens = ebayJPTokenizer.tokenize(japanese).stream()
+				.filter(token -> commonService.isUsableSpeechLevel(token)).collect(Collectors.toList());
+		
+//		List<Token> otherTokens = ebayJPTokenizer.tokenize(others).stream()
+//				.filter(otherToken -> commonService.isUsableSpeechLevel(otherToken)).collect(Collectors.toList());
+//		List<TokenEntity> otherTokensEntityList = commonService.getTokenEntityList(otherTokens);
+		
+		
+		List<TokenEntity> entityList = commonService.getTokenEntityList(tokens);
+		
+		List<TokenEntity> otherTokensEntityList = commonService.getUserTokenEntityList(Arrays.stream(others.replaceAll("\\s{2}", " ").split("\\s+")).collect(Collectors.toList()));
+
+		Map<String, List<TokenEntity>> map = new HashMap<String, List<TokenEntity>>();
+		map.put("tokens", entityList);
+		map.put("otherTokens", otherTokensEntityList);
+
+		return map;
+	}
+	
+	/**
+	 * <pre>
+	 * 1. 개요 : 일본어와 영어를 전부 다 형태소 분석기로 처리 한다.
+	 * 2. 처리내용 : 
+	 * </pre>
+	 * @Method Name : tokenizeUserDicAll
+	 * @date : 2019. 7. 26.
+	 * @author : hychoi
+	 * @history : 
+	 *	-----------------------------------------------------------------------
+	 *	변경일				작성자						변경내용  
+	 *	----------- ------------------- ---------------------------------------
+	 *	2019. 7. 26.		hychoi				최초 작성 
+	 *	-----------------------------------------------------------------------
+	 * 
+	 * @param text
+	 * @return
+	 */ 
+	public Map<String, List<TokenEntity>> tokenizeUserDicAll(String text) {
+
+		log.info("[KuromojiAnalyticsService]: >>>> tokenizeUserDic text: {}", text);
+
+		Map<String, String> languages = commonService.getLanguages(text);
+		String japanese = languages.get("japanese");
+		String others = languages.get("others");
+
+		List<Token> tokens = ebayJPTokenizer.tokenize(japanese).stream()
+				.filter(token -> commonService.isUsableSpeechLevel(token)).collect(Collectors.toList());
+		
+		List<Token> otherTokens = ebayJPTokenizer.tokenize(others).stream()
+				.filter(otherToken -> commonService.isUsableSpeechLevel(otherToken)).collect(Collectors.toList());
+		
+		List<TokenEntity> entityList = commonService.getTokenEntityList(tokens);
+		List<TokenEntity> otherTokensEntityList = commonService.getTokenEntityList(otherTokens);
+		
+
+		Map<String, List<TokenEntity>> map = new HashMap<String, List<TokenEntity>>();
+		map.put("tokens", entityList);
+		map.put("otherTokens", otherTokensEntityList);
+
+		return map;
+	}
+	
+	public Map<String, Object> tokenizeBrandDic(String text) {
 		
 		log.info("[KuromojiAnalyticsService]: >>>> tokenizeBrandDic text: {}", text);
 		
-		Map<String, String> languages = this.getLanguages(text);
+		Map<String, String> languages = commonService.getLanguages(text);
 		String japanese = languages.get("japanese");
 		String others = languages.get("others");
 		
 		List<Token> tokens = ebayJPBrandDicTokenizer.tokenize(japanese)
 				.stream()
-				.filter(token -> isValidate(token))
+				.filter(token -> commonService.isUsableSpeechLevel(token))
 				.collect(Collectors.toList());
 		
-		List<TokenEntity> entityList = getTokenEntityList(tokens);
+		List<TokenEntity> entityList = commonService.getTokenEntityList(tokens);
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("tokens", entityList);
@@ -131,71 +208,45 @@ public Map<String, Object> tokenizeBrandDic(String text) {
 		
 		return map;
 	}
-
-	private boolean isValidate(Token token) {
-
-		boolean result = false;
-
-		// 동사, 명사, 형용사, 형용동사, 커스텀사전
-		if (PosType.VERB.getCodeName().equals(token.getPartOfSpeechLevel1())
-				|| PosType.NOUN.getCodeName().equals(token.getPartOfSpeechLevel1())
-				|| PosType.ADJE.getCodeName().equals(token.getPartOfSpeechLevel1())
-				|| PosType.ADVB.getCodeName().equals(token.getPartOfSpeechLevel1())
-				|| PosType.CUST.getCodeName().equals(token.getPartOfSpeechLevel1()))
-			result = true;
-
-		return result;
-	}
-
-	private List<TokenEntity> getTokenEntityList(List<Token> tokens) {
-
-		List<TokenEntity> entityList = new ArrayList<TokenEntity>();
-
-		for (Token token : tokens) {
-			TokenEntity tokenEntity = new TokenEntity(token);
-			entityList.add(tokenEntity);
-		}
-
-		return entityList;
-	}
 	
-	
-	private Map<String, String> getLanguages(String text) {
-		
-		Map<String, String> model = new HashMap<String, String>();
-		StringBuilder japanese = new StringBuilder();
-		StringBuilder others = new StringBuilder();
-		
-		for (char c : text.toCharArray()) {
-			if (isJapanese(c)) {
-				japanese.append(c);
-			} else {
-				others.append(c);
+	private void getKeyWord(String text) {
+
+		String[] splited = text.split("\\s+");
+
+		List<Token> tokens = new ArrayList<Token>();
+
+		if (!text.isEmpty()) {
+			
+			for (int i = 0; i < splited.length; i++) {
+				StringBuilder sb = new StringBuilder();
+
+				tokens = ebayJPTokenizer.tokenize(splited[i].trim())
+						.stream()
+						.collect(Collectors.toList());
+				
+				if (!tokens.isEmpty()) {
+					
+					if ( tokens.size() == 1 && commonService.isUsableSpeechLevel(tokens.get(0)) ) {
+						keywords.add(tokens.get(0));
+						log.info("keywords: {}", keywords);
+					} else {
+						
+						if (commonService.isUsableSpeechLevel(tokens.get(0))) {
+							keywords.add(tokens.get(0));
+							log.info("keywords: {}", keywords);
+						}
+						
+						for (int j = 1; j < tokens.size(); j++) {
+							sb.append(tokens.get(j).getSurface());
+						}
+						
+						log.info("texts: {}", sb.toString());
+						getKeyWord(sb.toString());
+					}
+				}
 			}
-        }
-		log.info("[KuromojiAnalyticsService]: >>>> japanese: {}", japanese);
-		log.info("[KuromojiAnalyticsService]: >>>> others: {}", others);
-		
-		model.put("japanese", japanese.toString());
-		model.put("others", others.toString());
-		
-		return model;
+		}
 	}
 	
-	private boolean isJapanese(char c) {
-		
-		boolean hasJapanese = false;
-		
-		if ( Character.UnicodeBlock.of(c) == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS
-                || Character.UnicodeBlock.of(c) == Character.UnicodeBlock.HIRAGANA
-                || Character.UnicodeBlock.of(c) == Character.UnicodeBlock.KATAKANA
-                || Character.UnicodeBlock.of(c) == Character.UnicodeBlock.HALFWIDTH_AND_FULLWIDTH_FORMS
-                || Character.UnicodeBlock.of(c) == Character.UnicodeBlock.HALFWIDTH_AND_FULLWIDTH_FORMS
-                || Character.UnicodeBlock.of(c) == Character.UnicodeBlock.CJK_SYMBOLS_AND_PUNCTUATION) {
-			hasJapanese = true;
-        }
-		
-		return hasJapanese;
-	}
 	
 }

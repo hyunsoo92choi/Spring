@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.atilika.kuromoji.ipadic.Token;
 import com.eBayJP.kuromoji.app.analytics.service.KuromojiAnalyticsService;
 import com.eBayJP.kuromoji.common.entity.TokenEntity;
 import com.eBayJP.kuromoji.common.entity.request.KuromojiRequestEntity;
@@ -64,16 +63,11 @@ public class KuromojiAnalyticsController {
         
 		log.info("[KuromojiAnalyticsController]: >>>> @GetMapping :text: {}", text);
 		
-		Map<String, Object> model = new HashMap<String, Object>();
-		Long startTime = System.currentTimeMillis();
-		
 		List<TokenEntity> entityList = kuromojiAnalyticsService.tokenize(text);
+		Map<String, Object> model = new HashMap<String, Object>();
 		
-		Long endTime = System.currentTimeMillis();
-		Long processTime = endTime - startTime;
 		model.put("tokens", entityList);
-		model.put("processTime",processTime.toString());
-		
+
 		TokenResponseEntity entity = new TokenResponseEntity(model);
 		
 		return new ResponseEntity< TokenResponseEntity >(entity, HttpStatus.OK);
@@ -101,33 +95,35 @@ public class KuromojiAnalyticsController {
 	@PostMapping(value = "/tokenize")
 	public ResponseEntity<Map<String, Object>> tokenizeByPost(@RequestBody KuromojiRequestEntity requestKuromojiEntity) {
 		
+		
 		List<String> textList = requestKuromojiEntity.getTexts();
-		
-		StringBuilder sb = new StringBuilder(textList.size());
-		
-		textList.forEach(text -> {
-	        sb.append(text);
-	        sb.append(System.lineSeparator());
-	    });
-		
-		log.info("[KuromojiAnalyticsController]: >>>> @@PostMapping :text: {}", sb.toString());
+		Map<String, Object> model = new HashMap<String, Object>();
+		List<TokenEntity> EntityList = new ArrayList<TokenEntity>();
 		
 		Long startTime = System.currentTimeMillis();
-		
-		Map<String, Object> model = kuromojiAnalyticsService.tokenizeJapanese(sb.toString());
-		
+		//.replaceAll("(?![-,.,/p{Han}/p{Hiragana}/p{Katakana},\\p{IsAlphabetic}\\p{IsDigit}])[\\p{Punct}\\s]", "_")
+		textList.forEach(text -> {
+			log.info("[KuromojiAnalyticsController]: >>>> @@PostMapping :text: {}", text);
+			StringBuilder sb = new StringBuilder(text.length());
+			Map<String, List<TokenEntity>> inlineModel = new HashMap<String, List<TokenEntity>>();
+			sb.append(text);
+			inlineModel = kuromojiAnalyticsService.tokenizeUserDicAll(sb.toString());
+			
+			log.info("[KuromojiAnalyticsController]: >>>> result: {}", inlineModel);
+			
+			EntityList.addAll(inlineModel.get("tokens"));
+			EntityList.addAll(inlineModel.get("otherTokens"));
+			
+	    });
+		model.put("Entitys",EntityList);
 		Long endTime = System.currentTimeMillis();
 		Long processTime = endTime - startTime;
-		
-		model.put("startTime",startTime.toString());
-		model.put("endTime",endTime.toString());
 		model.put("processTime",processTime.toString());
-		
 		return new ResponseEntity< Map<String, Object> >(model, HttpStatus.OK);
 	}
 	
 	@ApiVersion(1)
-	@PostMapping(value = "/tokenize")
+	@PostMapping(value = "/brandDic/tokenize")
 	public ResponseEntity<Map<String, Object>> tokenizeByBrandDic(@RequestBody KuromojiRequestEntity requestKuromojiEntity) {
 		
 		List<String> textList = requestKuromojiEntity.getTexts();
@@ -141,17 +137,7 @@ public class KuromojiAnalyticsController {
 		
 		log.info("[KuromojiAnalyticsController]: >>>> @@tokenizeByBrandDic :text: {}", sb.toString());
 		
-		Long startTime = System.currentTimeMillis();
-		
 		Map<String, Object> model = kuromojiAnalyticsService.tokenizeBrandDic(sb.toString());
-		
-		Long endTime = System.currentTimeMillis();
-		Long processTime = endTime - startTime;
-		
-		
-		model.put("startTime",startTime.toString());
-		model.put("endTime",endTime.toString());
-		model.put("processTime",processTime.toString());
 		
 		return new ResponseEntity< Map<String, Object> >(model, HttpStatus.OK);
 	}
