@@ -19,14 +19,10 @@ public class TokenResponseEntity implements Serializable  {
 	private static final long serialVersionUID = -3415878730381986845L;
 	
 	private List<TokenEntity> tokens = new ArrayList<TokenEntity>();
-//	private String startTime = "";
-//	private String endTime = "";
 	private String processTime = "";
 
 	public TokenResponseEntity(Map<String, Object> model) {
 		this.tokens = (List<TokenEntity>) model.get("tokens");
-//		this.startTime = (String) model.get("startTime");
-//		this.endTime = (String) model.get("endTime");
 		this.processTime = (String) model.get("processTime");
 	}
 }

@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import com.atilika.kuromoji.ipadic.Token;
 import com.atilika.kuromoji.ipadic.Tokenizer;
 import com.eBayJP.kuromoji.common.code.mapper.EnumMapper;
-import com.eBayJP.kuromoji.common.code.mapper.EnumValue;
 import com.eBayJP.kuromoji.common.code.pos.PosType;
 import com.eBayJP.kuromoji.common.entity.TokenEntity;
 import com.eBayJP.kuromoji.util.FileUtil;
@@ -53,15 +52,7 @@ public class KuromojiIpadicService {
 		
 		Tokenizer tokenizer = null;
 		
-//		try {
-//			//tokenizer = makeTokenizer(userDictionary);
-//		} catch (IOException e) {
-//			
-//			e.printStackTrace();
-//		}
-		
 		List<Token> tokens = tokenizer.tokenize(text);
-//		List<TokenEntity> entityList = getTokenEntityList(tokens);
 		return tokens;
 	}
 	

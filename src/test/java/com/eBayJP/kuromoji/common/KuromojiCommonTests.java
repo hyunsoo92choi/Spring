@@ -10,7 +10,6 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -49,7 +48,7 @@ public class KuromojiCommonTests {
         List<EnumValue> enumValues = enumMapperFactory.get(KEY_POS);
 
         //then
-        assertThat(enumValues.size()).isEqualTo(11);
+        assertThat(enumValues.size()).isEqualTo(12);
 
 //        enumValues.forEach(e -> System.out.println(e.toString()));
     }

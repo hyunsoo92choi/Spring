@@ -10,7 +10,6 @@ import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 import org.springframework.core.io.ClassPathResource;
 

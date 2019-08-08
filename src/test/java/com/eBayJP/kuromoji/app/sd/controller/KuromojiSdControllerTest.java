@@ -1,4 +1,11 @@
-package com.eBayJP.kuromoji.app.analytics.controller;
+package com.eBayJP.kuromoji.app.sd.controller;
+ /**
+ * <pre>
+ * com.eBayJP.kuromoji.app.sd.controller_KuromojiSdControllerTest.java
+ * </pre>
+ * @date : 2019. 7. 31.
+ * @author : hychoi
+ */
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
@@ -35,25 +42,19 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.eBayJP.kuromoji.app.analytics.service.KuromojiAnalyticsService;
+import com.eBayJP.kuromoji.app.sd.service.KuromojiSdService;
 import com.eBayJP.kuromoji.common.entity.request.KuromojiRequestEntity;
 import com.fasterxml.jackson.databind.ObjectMapper;
-/**
- * <pre>
- * com.eBayJP.kuromoji.app.analytics.controller_KuromojiAnalyticsControllerTest.java
- * </pre>
- * @date : 2019. 7. 1.
- * @author : hychoi
- */
+
 /**
  * 스프링 기본 컨텍스트를 사용 하기 위한 어노테이션
  */
 @RunWith(SpringRunner.class)
-@WebMvcTest({KuromojiAnalyticsController.class})
+@WebMvcTest({KuromojiSdController.class})
 @EnableSpringDataWebSupport
 @ComponentScan(basePackages = "com.eBayJP.kuromoji")
-public class KuromojiAnalyticsControllerTest {
-
+public class KuromojiSdControllerTest {
+	
 	@Rule
 	public JUnitRestDocumentation restDocumentation = new JUnitRestDocumentation();
 
@@ -62,17 +63,16 @@ public class KuromojiAnalyticsControllerTest {
 	private RestDocumentationResultHandler document;
 	private static final MediaType APPLICATION_JSON_UTF8 = new MediaType(MediaType.APPLICATION_JSON.getType(),
 	        MediaType.APPLICATION_JSON.getSubtype(), StandardCharsets.UTF_8 );
-	private static final String ROOT_URI = "/api/v1/analytics";
+	private static final String ROOT_URI = "/api/v1/brand";
 	
 	@Autowired
 	private MockMvc mvc;
 
 	@MockBean
-	private KuromojiAnalyticsService kuromojiAnalyticsService;
+	private KuromojiSdService kuromojiSdService;
 
 	private KuromojiRequestEntity requestDto;
 	StringBuilder sb = new StringBuilder();
-	
 	
 	@Before
     public void setUp() {
@@ -99,17 +99,26 @@ public class KuromojiAnalyticsControllerTest {
     }
 	
 	@Test
-	public void 토큰화_성공() throws Exception {
-		doResultActions("/brandDic/tokenize", requestDto).andExpect(status().isOk())
+	public void 브랜드사전_토큰화_성공() throws Exception {
+		doResultActions("/tokenize", requestDto).andExpect(status().isOk())
 		.andDo(document.document(
               requestParameters(
                       parameterWithName("text").description("토큰화 할 text")
               ),
               responseFields(
               		fieldWithPath("[].surface").description("surface"),
+              		fieldWithPath("[].position").description("position"),
+              		fieldWithPath("[].partOfSpeechLevel1").description("partOfSpeechLevel1"),
+              		fieldWithPath("[].partOfSpeechLevel2").description("partOfSpeechLevel2"),
+              		fieldWithPath("[].partOfSpeechLevel3").description("partOfSpeechLevel3"),
+              		fieldWithPath("[].partOfSpeechLevel4").description("partOfSpeechLevel4"),
+              		fieldWithPath("[].conjugationType").description("conjugationType"),
+              		fieldWithPath("[].conjugationForm").description("conjugationForm"),
               		fieldWithPath("[].reading").description("reading"),
-              		fieldWithPath("[].baseForm").description("baseForm")
-              		)                        		
+              		fieldWithPath("[].baseForm").description("baseForm"),
+              		fieldWithPath("[].pronunciation").description("pronunciation"),
+              		fieldWithPath("[].known").description("known"),
+              		fieldWithPath("[].allFeatures").description("allFeatures") )                        		
 				));
 
 	}
@@ -120,4 +129,5 @@ public class KuromojiAnalyticsControllerTest {
 				.content(resultJson);
 		return mvc.perform(rb).andDo(print());
 	}
+		
 }

@@ -1,5 +1,6 @@
 package com.eBayJP.kuromoji.app.analytics.controller;
 
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,10 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.eBayJP.kuromoji.app.analytics.entity.AnalyticsTokenEntity;
 import com.eBayJP.kuromoji.app.analytics.service.KuromojiAnalyticsService;
-import com.eBayJP.kuromoji.common.entity.TokenEntity;
 import com.eBayJP.kuromoji.common.entity.request.KuromojiRequestEntity;
-import com.eBayJP.kuromoji.common.entity.response.TokenResponseEntity;
 import com.eBayJP.kuromoji.common.version.ApiVersion;
 
 /**
@@ -52,6 +52,7 @@ public class KuromojiAnalyticsController {
 	 *	변경일				작성자						변경내용  
 	 *	----------- ------------------- ---------------------------------------
 	 *	2019. 6. 28.		hychoi				최초 작성 
+	 *	2019. 7. 31.		hychoi				사용자사전 @GetMapping 개선
 	 *	-----------------------------------------------------------------------
 	 * 
 	 * @param text
@@ -59,19 +60,24 @@ public class KuromojiAnalyticsController {
 	 */ 
 	@ApiVersion(1)
 	@GetMapping(value = "/tokenize")
-    public ResponseEntity<TokenResponseEntity> tokenize(@RequestParam("text") String text) {
+    public ResponseEntity<Map<String, Object>> tokenize(@RequestParam("text") String text) {
         
 		log.info("[KuromojiAnalyticsController]: >>>> @GetMapping :text: {}", text);
 		
-		List<TokenEntity> entityList = kuromojiAnalyticsService.tokenize(text);
+//		String encodedParam = URLEncoder.encode(text, "UTF-8");
+		
 		Map<String, Object> model = new HashMap<String, Object>();
+		List<AnalyticsTokenEntity> EntityList = new ArrayList<AnalyticsTokenEntity>();
 		
-		model.put("tokens", entityList);
-
-		TokenResponseEntity entity = new TokenResponseEntity(model);
+		Map<String, List<AnalyticsTokenEntity>> inlineModel = kuromojiAnalyticsService.tokenizeUserDicAll(text);
 		
-		return new ResponseEntity< TokenResponseEntity >(entity, HttpStatus.OK);
-    }
+		EntityList.addAll(inlineModel.get("tokens"));
+		EntityList.addAll(inlineModel.get("otherTokens"));
+		
+		model.put("result",EntityList);
+		
+		return new ResponseEntity< Map<String, Object> >(model, HttpStatus.OK);
+	}
 	
 	/**
 	 * <pre>
@@ -98,14 +104,14 @@ public class KuromojiAnalyticsController {
 		
 		List<String> textList = requestKuromojiEntity.getTexts();
 		Map<String, Object> model = new HashMap<String, Object>();
-		List<TokenEntity> EntityList = new ArrayList<TokenEntity>();
+		List<AnalyticsTokenEntity> EntityList = new ArrayList<AnalyticsTokenEntity>();
 		
 		Long startTime = System.currentTimeMillis();
-		//.replaceAll("(?![-,.,/p{Han}/p{Hiragana}/p{Katakana},\\p{IsAlphabetic}\\p{IsDigit}])[\\p{Punct}\\s]", "_")
+		
 		textList.forEach(text -> {
 			log.info("[KuromojiAnalyticsController]: >>>> @@PostMapping :text: {}", text);
 			StringBuilder sb = new StringBuilder(text.length());
-			Map<String, List<TokenEntity>> inlineModel = new HashMap<String, List<TokenEntity>>();
+			Map<String, List<AnalyticsTokenEntity>> inlineModel = new HashMap<String, List<AnalyticsTokenEntity>>();
 			sb.append(text);
 			inlineModel = kuromojiAnalyticsService.tokenizeUserDicAll(sb.toString());
 			
@@ -115,10 +121,11 @@ public class KuromojiAnalyticsController {
 			EntityList.addAll(inlineModel.get("otherTokens"));
 			
 	    });
-		model.put("Entitys",EntityList);
-		Long endTime = System.currentTimeMillis();
-		Long processTime = endTime - startTime;
-		model.put("processTime",processTime.toString());
+		
+		model.put("result",EntityList);
+//		Long endTime = System.currentTimeMillis();
+//		Long processTime = endTime - startTime;
+//		model.put("processTime",processTime.toString());
 		return new ResponseEntity< Map<String, Object> >(model, HttpStatus.OK);
 	}
 	

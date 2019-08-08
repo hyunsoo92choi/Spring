@@ -33,12 +33,16 @@ public class ScheduleConfiguration implements ApplicationContextAware {
     void init(){
 		
 		String newEbayJapanDictionary = FileUtil.getUserDictionary();
+		String newEbayJapanBrandDictionary = FileUtil.getBrandDictionary();
 		
 		if ( !FileUtil.ebayJapanDictionary.contentEquals(newEbayJapanDictionary) )
 			FileUtil.ebayJapanDictionary = newEbayJapanDictionary;
 		
-//		log.info("[ScheduleConfiguration]: >>>> init:\n{}",FileUtil.ebayJapanDictionary);
+		if ( !FileUtil.ebayJapanBrandDictionary.contentEquals(newEbayJapanBrandDictionary) )
+			FileUtil.ebayJapanBrandDictionary = newEbayJapanBrandDictionary;
+		
 		resetBean("EbayJPTokenizer");
+		resetBean("EbayJPBrandDicTokenizer");
     }
 
 	@Override

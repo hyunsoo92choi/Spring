@@ -123,7 +123,11 @@
 			<type>pom</type>
 		</dependency>
 
-
+		<dependency>
+			<groupId>com.github.maricn</groupId>
+			<artifactId>logback-slack-appender</artifactId>
+			<version>1.4.0</version>
+		</dependency>
 
 	</dependencies>
 
@@ -155,7 +159,7 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				
 				<configuration>
-					<skipTests>false</skipTests>
+					<skipTests>true</skipTests>
 					<testFailureIgnore>true</testFailureIgnore>
 					<forkMode>once</forkMode>
 				</configuration>

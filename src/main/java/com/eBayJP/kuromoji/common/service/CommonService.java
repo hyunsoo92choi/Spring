@@ -31,6 +31,7 @@ import com.ibm.icu.text.Transliterator;
 public class CommonService {
 
 	private static final Logger log = LoggerFactory.getLogger(CommonService.class);
+	
 	private static final String WHITESPACE = " ";
 	private static final Transliterator transliterator = Transliterator.getInstance("Fullwidth-Halfwidth");
 	private static final Transliterator kanaTransliterator = Transliterator.getInstance("Halfwidth-Fullwidth");
@@ -58,7 +59,7 @@ public class CommonService {
 	 */ 
 	public List<TokenEntity> tokenizer(String text) {
 
-		log.info("[KuromojiAnalyticsService]: >>>> Tokenize text: {}", text);
+		log.info("[CommonService]: >>>> Tokenize text: {}", text);
 
 		List<Token> tokens = tokenizer
 				.tokenize(text)
@@ -152,8 +153,8 @@ public class CommonService {
 			}
 		}
 
-		log.info("[KuromojiAnalyticsService]: >>>> japanese: {}", japanese);
-		log.info("[KuromojiAnalyticsService]: >>>> others: {}", others);
+		log.info("[CommonService]: >>>> japanese: {}", japanese);
+		log.info("[CommonService]: >>>> others: {}", others);
 
 		model.put("japanese", japanese.toString());
 		model.put("others", others.toString());
@@ -229,6 +230,25 @@ public class CommonService {
 
 		return result;
 	}
+	
+	/**
+	 * <pre>
+	 * 1. 개요 : 입력값을 가지고 TokenEntity List를 생성하여 반환하는 메서드
+	 * 2. 처리내용 : 입력값을 가지고 TokenEntity List를 생성하여 반환하는 메서드
+	 * </pre>
+	 * @Method Name : getUserTokenEntityList
+	 * @date : 2019. 7. 31.
+	 * @author : hychoi
+	 * @history : 
+	 *	-----------------------------------------------------------------------
+	 *	변경일				작성자						변경내용  
+	 *	----------- ------------------- ---------------------------------------
+	 *	2019. 7. 31.		hychoi				최초 작성 
+	 *	-----------------------------------------------------------------------
+	 * 
+	 * @param surfaces
+	 * @return List<TokenEntity>
+	 */ 
 	public List<TokenEntity> getUserTokenEntityList(List<String> surfaces) {
 		
 		List<TokenEntity> entityList = new ArrayList<TokenEntity>();

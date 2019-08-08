@@ -4,9 +4,13 @@ import java.io.Serializable;
 
 import com.atilika.kuromoji.ipadic.Token;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class TokenEntity implements Serializable {
 
 	/**
@@ -25,7 +29,6 @@ public class TokenEntity implements Serializable {
 	private String reading;
 	private String baseForm;
 	private String pronunciation;
-//	@ApiModelProperty(required = true, value = "All features array")
 //	private String[] allFeaturesArray;
 	private Boolean known;
 	private String allFeatures;
@@ -54,5 +57,5 @@ public class TokenEntity implements Serializable {
 		this.surface = surface;
 		this.partOfSpeechLevel1 = "CUSTOM";
 		this.reading = surface;
-	}
+	}	
 }
